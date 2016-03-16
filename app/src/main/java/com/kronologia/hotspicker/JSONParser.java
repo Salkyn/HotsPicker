@@ -1,76 +1,36 @@
 package com.kronologia.hotspicker;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import android.util.Log;
 
+import com.android.volley.*;
+import com.android.volley.toolbox.JsonObjectRequest;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
  * Created by Maxence on 14/03/2016.
  */
 public class JSONParser {
+    String url = "http://my-json-feed";
 
-    static InputStream is = null;
-    static JSONObject jobj = null;
-    static String json = "";
-    public JSONParser(){
+    public void makeHttpRequest(String url){
 
-    }
-    //TODO adapter HttpRequest à API 23+
-    public JSONObject makeHttpRequest(String url){
-        DefaultHttpClient httpclient = new DefaultHttpClient();
-        HttpPost httppost = new HttpPost(url);
-        try {
-            HttpResponse httpresponse = httpclient.execute(httppost);
-            HttpEntity httpentity = httpresponse.getEntity();
-            is = httpentity.getContent();
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
-        } catch (ClientProtocolException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("JSON", response.toString());
+                    }
+                }, new Response.ErrorListener() {
 
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is,"iso-8859-1"),8);
-            StringBuilder sb = new StringBuilder();
-            String line = null;
-            try {
-                while((line = reader.readLine())!=null){
-                    sb.append(line+"\n");
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO Auto-generated method stub
 
-                }
-                is.close();
-                json = sb.toString();
-                try {
-                    jobj = new JSONObject(json);
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+                    }
+                });
 
-        } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        return jobj;
 
     }
 
