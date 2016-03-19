@@ -20,7 +20,6 @@ public class MainActivity extends Activity {
 
     private static String TAG = MainActivity.class.getSimpleName();
 
-    String url = "kronologia.fr/HotsPicker/Azmodan.json";
     private String jsonResponse;
 
     @Override
@@ -33,50 +32,54 @@ public class MainActivity extends Activity {
 
     private void makeJsonArrayRequest() {
 
-        JsonArrayRequest req = new JsonArrayRequest(url,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        Log.d(TAG, response.toString());
+        Response.Listener<JSONArray> respListener = new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
 
-                        try {
-                            // Parsing json array response
-                            // loop through each json object
-                            jsonResponse = "";
-                            for (int i = 0; i < response.length(); i++) {
+                try {
+                    jsonResponse = "";
+                    for (int i = 0; i < response.length(); i++) {
 
-                                JSONObject person = (JSONObject) response.get(i);
+                        //Log.d(TAG, response.get(i).toString());
 
-                                String hero1 = person.getString("hero1");
-                                String hero2 = person.getString("hero2");
-                                String winrate = person.getString("winrate");
+                        Log.d(TAG, "CLASS " + response.get(i).getClass().toString());
 
-                                jsonResponse += hero1;
-                                jsonResponse += " vs " + hero2;
-                                jsonResponse += " : " + winrate;
+                        JSONObject person = (JSONObject) response.get(i);
 
-                            }
+                        String hero2 = person.getString("hero2");
+                        String winrate = person.getString("winrate");
+                        String hero1 = person.getString("hero1");
 
-                            Log.d(TAG, jsonResponse);
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Toast.makeText(getApplicationContext(),
-                                    "Error: " + e.getMessage(),
-                                    Toast.LENGTH_LONG).show();
-                        }
+                        jsonResponse += hero1;
+                        jsonResponse += " vs " + hero2;
+                        jsonResponse += " : " + winrate;
 
                     }
-                }, new Response.ErrorListener() {
+
+                    Log.d(TAG, jsonResponse);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(),
+                            "Error: " + e.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                }
+
+            }
+        };
+
+        Response.ErrorListener errListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
                 Toast.makeText(getApplicationContext(),
                         error.getMessage(), Toast.LENGTH_SHORT).show();
             }
-        });
+        };
+
+        JsonArrayRequest req = new JsonArrayRequest("http://www.kronologia.fr/HotsPicker/Azmodan.json", respListener, errListener);
 
         // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(req);
+       AppController.getInstance().addToRequestQueue(req);
     }
 }
