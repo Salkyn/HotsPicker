@@ -1,5 +1,7 @@
 package com.kronologia.hotspicker;
 
+import com.android.volley.Request;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.kronologia.hotspicker.AppController;
 
 import android.app.Activity;
@@ -21,16 +23,20 @@ public class MainActivity extends Activity {
     private static String TAG = MainActivity.class.getSimpleName();
 
     private String jsonResponse;
+    private String baseUrl = "http://www.kronologia.fr/HotsPicker/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        makeJsonArrayRequest();
+
+        String heroName = "Xul";
+
+        makeJsonArrayRequest(heroName);
     }
 
-    private void makeJsonArrayRequest() {
+    private void makeJsonArrayRequest(String heroName) {
 
         Response.Listener<JSONArray> respListener = new Response.Listener<JSONArray>() {
             @Override
@@ -52,7 +58,7 @@ public class MainActivity extends Activity {
 
                         jsonResponse += hero1;
                         jsonResponse += " vs " + hero2;
-                        jsonResponse += " : " + winrate;
+                        jsonResponse += " : " + winrate + "%\n";
 
                     }
 
@@ -77,7 +83,7 @@ public class MainActivity extends Activity {
             }
         };
 
-        JsonArrayRequest req = new JsonArrayRequest("http://www.kronologia.fr/HotsPicker/Azmodan.json", respListener, errListener);
+        JsonArrayRequest req = new JsonArrayRequest(baseUrl + heroName + ".json", respListener, errListener);
 
         // Adding request to request queue
        AppController.getInstance().addToRequestQueue(req);
