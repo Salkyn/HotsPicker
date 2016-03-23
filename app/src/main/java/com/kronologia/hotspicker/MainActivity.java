@@ -37,15 +37,12 @@ public class MainActivity extends Activity {
     ImageView im1;
     ImageView im2;
 
-    String[] heroNames = {"Xul", "Nova", "Murky", "Artanis"}; //TODO compléter+globaliser
+    String[] heroNames = {"abathur", "xul", "nova", "murky", "artanis"}; //TODO compléter+globaliser
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        String heroName = "Kael'Thas";
-        String heroVs = "Zeratul";
 
        etHero1 = (EditText) findViewById(R.id.hero1);
        etHero2 = (EditText) findViewById(R.id.hero2);
@@ -55,8 +52,6 @@ public class MainActivity extends Activity {
 
         etHero1.addTextChangedListener(etHeroNameListener);
         etHero2.addTextChangedListener(etHeroNameListener);
-
-       // makeJsonArrayRequest(heroName, heroVs);
     }
 
     TextWatcher etHeroNameListener = new TextWatcher() {
@@ -87,7 +82,7 @@ public class MainActivity extends Activity {
 
             if(Arrays.asList(heroNames).contains(n2)) {
                 int idHero = getResources().getIdentifier(n2, "drawable", getPackageName());
-                im1.setImageResource(idHero);
+                im2.setImageResource(idHero);
             }
 
             if(Arrays.asList(heroNames).contains(n1) && Arrays.asList(heroNames).contains(n2)) {
