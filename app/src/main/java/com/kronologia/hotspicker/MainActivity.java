@@ -31,24 +31,23 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
 
-        String heroName = "Xul";
+        String heroName = "Nova";
+        String heroVs = "Zeratul";
 
-        makeJsonArrayRequest(heroName);
+        makeJsonArrayRequest(heroName, heroVs);
     }
 
-    private void makeJsonArrayRequest(String heroName) {
+    private void makeJsonArrayRequest(final String heroName, final String heroVs) {
 
         Response.Listener<JSONArray> respListener = new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
 
                 try {
-                    jsonResponse = "";
+
                     for (int i = 0; i < response.length(); i++) {
-
-                        //Log.d(TAG, response.get(i).toString());
-
-                        Log.d(TAG, "CLASS " + response.get(i).getClass().toString());
+                        jsonResponse = "";
+                        //Log.d(TAG, "CLASS " + response.get(i).getClass().toString());
 
                         JSONObject person = (JSONObject) response.get(i);
 
@@ -60,10 +59,12 @@ public class MainActivity extends Activity {
                         jsonResponse += " vs " + hero2;
                         jsonResponse += " : " + winrate + "%\n";
 
+
+                        if((hero1.equals(heroVs) && hero2.equals(heroName)) || (hero2.equals(heroVs) && hero1.equals(heroName))) {
+                            Log.d(TAG, jsonResponse);
+                        }
+
                     }
-
-                    Log.d(TAG, jsonResponse);
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Toast.makeText(getApplicationContext(),
@@ -84,8 +85,9 @@ public class MainActivity extends Activity {
         };
 
         JsonArrayRequest req = new JsonArrayRequest(baseUrl + heroName + ".json", respListener, errListener);
+        JsonArrayRequest req2 = new JsonArrayRequest(baseUrl + heroVs + ".json", respListener, errListener);
 
-        // Adding request to request queue
-       AppController.getInstance().addToRequestQueue(req);
+        AppController.getInstance().addToRequestQueue(req);
+        AppController.getInstance().addToRequestQueue(req2);
     }
 }
