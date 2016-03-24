@@ -37,7 +37,13 @@ public class MainActivity extends Activity {
     ImageView im1;
     ImageView im2;
 
-    String[] heroNames = {"abathur", "xul", "nova", "murky", "artanis"}; //TODO compléter+globaliser
+    String[] heroNames = {"falstad","gall","greymane","illidan","jaina","kaelthas",
+            "kerrigan","liming","lunara","nova","raynor","thebutcher","thrall",
+            "tychus","valla","zeratul","abathur","azmodan","gazlowe","lostvikings",
+            "murky","nazeebo","sgthammer","sylvanas","xul","zagara","brightwing",
+            "kharazim","lili","ltmorales","malfurion","rehgar","tassadar","tyrande",
+            "uther","anubarak","artanis","arthas","chen","cho","diablo","etc","johanna",
+            "leoric","muradin","rexxar","sonya","stitches","tyrael"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +79,6 @@ public class MainActivity extends Activity {
             String n1 =  etHero1.getText().toString();
             String n2 =  etHero2.getText().toString();
 
-            //TODO le changement d'image ne marche qu'une fois...
-
             if(Arrays.asList(heroNames).contains(n1)) {
                 int idHero = getResources().getIdentifier(n1, "drawable", getPackageName());
                 im1.setImageResource(idHero);
@@ -94,6 +98,8 @@ public class MainActivity extends Activity {
     };
 
     private void makeJsonArrayRequest(final String heroName, final String heroVs) {
+
+        Log.d(TAG, "JsonArrayRequest with " + heroName + " vs " + heroVs);
 
         Response.Listener<JSONArray> respListener = new Response.Listener<JSONArray>() {
             @Override
@@ -116,9 +122,9 @@ public class MainActivity extends Activity {
                         jsonResponse += " : " + winrate + "%\n";
 
 
-                        if((hero1.equals(heroVs) && hero2.equals(heroName)) || (hero2.equals(heroVs) && hero1.equals(heroName))) {
+                        //if((hero1.equals(heroVs) && hero2.equals(heroName)) || (hero2.equals(heroVs) && hero1.equals(heroName))) {
                             Log.d(TAG, jsonResponse);
-                        }
+                        //}
 
                     }
                 } catch (JSONException e) {
