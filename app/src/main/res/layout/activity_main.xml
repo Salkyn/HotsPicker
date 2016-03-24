@@ -15,10 +15,10 @@
         android:layout_height="wrap_content"
         android:id="@+id/hero1" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/hero2" />
+    <Spinner
+        android:id="@+id/hero_spinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
 
     <ImageView
         android:id="@+id/imageView1"

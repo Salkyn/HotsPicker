@@ -32,7 +32,6 @@ public class MainActivity extends Activity {
     private String baseUrl = "http://www.kronologia.fr/HotsPicker/";
 
     EditText etHero1;
-    EditText etHero2;
 
     ImageView im1;
     ImageView im2;
@@ -51,13 +50,11 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
        etHero1 = (EditText) findViewById(R.id.hero1);
-       etHero2 = (EditText) findViewById(R.id.hero2);
 
         im1 = (ImageView) findViewById(R.id.imageView1);
         im2 = (ImageView) findViewById(R.id.imageView2);
 
         etHero1.addTextChangedListener(etHeroNameListener);
-       // etHero2.addTextChangedListener(etHeroNameListener);
     }
 
     TextWatcher etHeroNameListener = new TextWatcher() {
@@ -77,7 +74,6 @@ public class MainActivity extends Activity {
            // Log.d(TAG, "et2 = " + etHero2.getText().toString());
 
             String n1 =  etHero1.getText().toString();
-            String n2 =  etHero2.getText().toString();
 
             if(Arrays.asList(heroNames).contains(n1)) {
                 int idHero = getResources().getIdentifier(n1, "drawable", getPackageName());
