@@ -57,7 +57,7 @@ public class MainActivity extends Activity {
         im2 = (ImageView) findViewById(R.id.imageView2);
 
         etHero1.addTextChangedListener(etHeroNameListener);
-        etHero2.addTextChangedListener(etHeroNameListener);
+       // etHero2.addTextChangedListener(etHeroNameListener);
     }
 
     TextWatcher etHeroNameListener = new TextWatcher() {
@@ -74,7 +74,7 @@ public class MainActivity extends Activity {
         @Override
         public void afterTextChanged(Editable s) {
             Log.d(TAG, "et1 = " + etHero1.getText().toString());
-            Log.d(TAG, "et2 = " + etHero2.getText().toString());
+           // Log.d(TAG, "et2 = " + etHero2.getText().toString());
 
             String n1 =  etHero1.getText().toString();
             String n2 =  etHero2.getText().toString();
@@ -82,24 +82,16 @@ public class MainActivity extends Activity {
             if(Arrays.asList(heroNames).contains(n1)) {
                 int idHero = getResources().getIdentifier(n1, "drawable", getPackageName());
                 im1.setImageResource(idHero);
+
+                makeJsonArrayRequest(n1);
             }
 
-            if(Arrays.asList(heroNames).contains(n2)) {
-                int idHero = getResources().getIdentifier(n2, "drawable", getPackageName());
-                im2.setImageResource(idHero);
-            }
-
-            if(Arrays.asList(heroNames).contains(n1) && Arrays.asList(heroNames).contains(n2)) {
-                Log.d(TAG, "Both ET are ok");
-                makeJsonArrayRequest(n1, n2);
-
-            }
         }
     };
 
-    private void makeJsonArrayRequest(final String heroName, final String heroVs) {
+    private void makeJsonArrayRequest(final String heroName) {
 
-        Log.d(TAG, "JsonArrayRequest with " + heroName + " vs " + heroVs);
+        Log.d(TAG, "JsonArrayRequest with " + heroName);
 
         Response.Listener<JSONArray> respListener = new Response.Listener<JSONArray>() {
             @Override
@@ -107,26 +99,29 @@ public class MainActivity extends Activity {
 
                 try {
 
+                    String bestVs="";
+                    double bestWinrate = 0;
+
                     for (int i = 0; i < response.length(); i++) {
                         jsonResponse = "";
-                        //Log.d(TAG, "CLASS " + response.get(i).getClass().toString());
 
                         JSONObject person = (JSONObject) response.get(i);
 
-                        String hero2 = person.getString("hero2");
-                        String winrate = person.getString("winrate");
-                        String hero1 = person.getString("hero1");
+                        double winrate = Double.valueOf(person.getString("winrate"));
 
-                        jsonResponse += hero1;
-                        jsonResponse += " vs " + hero2;
-                        jsonResponse += " : " + winrate + "%\n";
+                        //Log.d(TAG, person.getString("hero2") + " " + winrate);
 
+                        if(winrate > bestWinrate) {
+                            bestWinrate = winrate;
 
-                        //if((hero1.equals(heroVs) && hero2.equals(heroName)) || (hero2.equals(heroVs) && hero1.equals(heroName))) {
-                            Log.d(TAG, jsonResponse);
-                        //}
+                            bestVs =  person.getString("hero2");
+                            int idHero = getResources().getIdentifier(bestVs.toLowerCase(), "drawable", getPackageName());
+                            im2.setImageResource(idHero);
+                        }
 
                     }
+
+                    Log.d(TAG, bestVs + " is the best against " + heroName + " (" + bestWinrate + "%)");
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Toast.makeText(getApplicationContext(),
@@ -147,9 +142,7 @@ public class MainActivity extends Activity {
         };
 
         JsonArrayRequest req = new JsonArrayRequest(baseUrl + heroName + ".json", respListener, errListener);
-        JsonArrayRequest req2 = new JsonArrayRequest(baseUrl + heroVs + ".json", respListener, errListener);
 
         AppController.getInstance().addToRequestQueue(req);
-        AppController.getInstance().addToRequestQueue(req2);
     }
 }
