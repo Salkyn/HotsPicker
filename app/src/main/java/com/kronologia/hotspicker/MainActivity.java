@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -36,6 +37,8 @@ public class MainActivity extends Activity {
     ImageView im1;
     ImageView im2;
 
+    LinearLayout imLayout;
+
     String[] heroNames = {"falstad","gall","greymane","illidan","jaina","kaelthas",
             "kerrigan","liming","lunara","nova","raynor","thebutcher","thrall",
             "tychus","valla","zeratul","abathur","azmodan","gazlowe","lostvikings",
@@ -49,12 +52,22 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-       etHero1 = (EditText) findViewById(R.id.hero1);
+        imLayout = (LinearLayout) findViewById(R.id.images_layout);
+
+        etHero1 = (EditText) findViewById(R.id.hero1);
 
         im1 = (ImageView) findViewById(R.id.imageView1);
         im2 = (ImageView) findViewById(R.id.imageView2);
 
         etHero1.addTextChangedListener(etHeroNameListener);
+
+        for(String hero : heroNames) {
+            ImageView i = new ImageView(this);
+            int id = getResources().getIdentifier(hero, "drawable", getPackageName());
+            i.setImageResource(id);
+
+            imLayout.addView(i);
+        }
     }
 
     TextWatcher etHeroNameListener = new TextWatcher() {
@@ -71,7 +84,7 @@ public class MainActivity extends Activity {
         @Override
         public void afterTextChanged(Editable s) {
             Log.d(TAG, "et1 = " + etHero1.getText().toString());
-           // Log.d(TAG, "et2 = " + etHero2.getText().toString());
+            // Log.d(TAG, "et2 = " + etHero2.getText().toString());
 
             String n1 =  etHero1.getText().toString();
 
@@ -96,7 +109,7 @@ public class MainActivity extends Activity {
                 try {
 
                     String bestVs="";
-                    double bestWinrate = 0;
+                    double bestWinrate = 100;
 
                     for (int i = 0; i < response.length(); i++) {
                         jsonResponse = "";
@@ -107,15 +120,17 @@ public class MainActivity extends Activity {
 
                         //Log.d(TAG, person.getString("hero2") + " " + winrate);
 
-                        if(winrate > bestWinrate) {
+                        if(winrate < bestWinrate) {
                             bestWinrate = winrate;
-
                             bestVs =  person.getString("hero2");
-                            int idHero = getResources().getIdentifier(bestVs.toLowerCase(), "drawable", getPackageName());
-                            im2.setImageResource(idHero);
                         }
 
                     }
+
+                    bestVs = bestVs.equals("The Lost Vikings") ? "lostvikings" : bestVs;
+
+                    int idHero = getResources().getIdentifier(bestVs.toLowerCase(), "drawable", getPackageName());
+                    im2.setImageResource(idHero);
 
                     Log.d(TAG, bestVs + " is the best against " + heroName + " (" + bestWinrate + "%)");
                 } catch (JSONException e) {
