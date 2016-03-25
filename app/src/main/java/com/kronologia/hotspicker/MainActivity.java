@@ -66,6 +66,7 @@ public class MainActivity extends Activity {
             int id = getResources().getIdentifier(hero, "drawable", getPackageName());
             i.setImageResource(id);
             i.setOnClickListener(imgClickListener);
+            i.setPadding(2,0,2,0);
             i.setTag(hero);
 
             imLayout.addView(i);
