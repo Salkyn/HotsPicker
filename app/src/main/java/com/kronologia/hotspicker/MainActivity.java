@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,8 +33,6 @@ public class MainActivity extends Activity {
     private String jsonResponse;
     private String baseUrl = "http://www.kronologia.fr/HotsPicker/";
 
-    EditText etHero1;
-
     ImageView im1;
     ImageView im2;
 
@@ -54,49 +53,33 @@ public class MainActivity extends Activity {
 
         imLayout = (LinearLayout) findViewById(R.id.images_layout);
 
-        etHero1 = (EditText) findViewById(R.id.hero1);
-
         im1 = (ImageView) findViewById(R.id.imageView1);
         im2 = (ImageView) findViewById(R.id.imageView2);
-
-        etHero1.addTextChangedListener(etHeroNameListener);
 
         for(String hero : heroNames) {
             ImageView i = new ImageView(this);
             int id = getResources().getIdentifier(hero, "drawable", getPackageName());
             i.setImageResource(id);
+            i.setOnClickListener(imgClickListener);
+            i.setTag(hero);
 
             imLayout.addView(i);
         }
     }
 
-    TextWatcher etHeroNameListener = new TextWatcher() {
+    View.OnClickListener imgClickListener = new View.OnClickListener() {
         @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        public void onClick(View v) {
 
-        }
+            String n1 = v.getTag().toString();
 
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            int idHero = getResources().getIdentifier(n1, "drawable", getPackageName());
+            im1.setImageResource(idHero);
 
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            Log.d(TAG, "et1 = " + etHero1.getText().toString());
-            // Log.d(TAG, "et2 = " + etHero2.getText().toString());
-
-            String n1 =  etHero1.getText().toString();
-
-            if(Arrays.asList(heroNames).contains(n1)) {
-                int idHero = getResources().getIdentifier(n1, "drawable", getPackageName());
-                im1.setImageResource(idHero);
-
-                makeJsonArrayRequest(n1);
-            }
-
+            makeJsonArrayRequest(n1);
         }
     };
+
 
     private void makeJsonArrayRequest(final String heroName) {
 
@@ -128,6 +111,10 @@ public class MainActivity extends Activity {
                     }
 
                     bestVs = bestVs.equals("The Lost Vikings") ? "lostvikings" : bestVs;
+                    bestVs = bestVs.equals("Sgt. Hammer") ? "sgthammer" : bestVs;
+                    bestVs = bestVs.equals("Ly. Morales") ? "ltmorales" : bestVs;
+                    bestVs = bestVs.equals("E.T.C.") ? "etc" : bestVs;
+                    bestVs = bestVs.equals("The Butcher") ? "thebutcher" : bestVs;
 
                     int idHero = getResources().getIdentifier(bestVs.toLowerCase(), "drawable", getPackageName());
                     im2.setImageResource(idHero);
