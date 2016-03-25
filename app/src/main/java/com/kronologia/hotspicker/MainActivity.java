@@ -25,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 public class MainActivity extends Activity {
 
@@ -33,9 +34,7 @@ public class MainActivity extends Activity {
     private String jsonResponse;
     private String baseUrl = "http://www.kronologia.fr/HotsPicker/";
 
-    ImageView im1;
-    ImageView im2;
-
+    ImageView im1, im2, im3, im4;
     LinearLayout imLayout;
 
     String[] heroNames = {"falstad","gall","greymane","illidan","jaina","kaelthas",
@@ -46,15 +45,21 @@ public class MainActivity extends Activity {
             "uther","anubarak","artanis","arthas","chen","cho","diablo","etc","johanna",
             "leoric","muradin","rexxar","sonya","stitches","tyrael"};
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Arrays.sort(heroNames);
+
         setContentView(R.layout.activity_main);
 
         imLayout = (LinearLayout) findViewById(R.id.images_layout);
 
         im1 = (ImageView) findViewById(R.id.imageView1);
         im2 = (ImageView) findViewById(R.id.imageView2);
+        im3 = (ImageView) findViewById(R.id.imageView3);
+        im4 = (ImageView) findViewById(R.id.imageView4);
 
         for(String hero : heroNames) {
             ImageView i = new ImageView(this);
@@ -91,7 +96,7 @@ public class MainActivity extends Activity {
 
                 try {
 
-                    String bestVs="";
+                    String[] bestVss= new String[3];
                     double bestWinrate = 100;
 
                     for (int i = 0; i < response.length(); i++) {
@@ -101,25 +106,34 @@ public class MainActivity extends Activity {
 
                         double winrate = Double.valueOf(person.getString("winrate"));
 
-                        //Log.d(TAG, person.getString("hero2") + " " + winrate);
 
                         if(winrate < bestWinrate) {
                             bestWinrate = winrate;
-                            bestVs =  person.getString("hero2");
+                            bestVss[2] = bestVss[1];
+                            bestVss[1] = bestVss[0];
+                            bestVss[0] =  person.getString("hero2");
                         }
 
                     }
 
-                    bestVs = bestVs.equals("The Lost Vikings") ? "lostvikings" : bestVs;
-                    bestVs = bestVs.equals("Sgt. Hammer") ? "sgthammer" : bestVs;
-                    bestVs = bestVs.equals("Ly. Morales") ? "ltmorales" : bestVs;
-                    bestVs = bestVs.equals("E.T.C.") ? "etc" : bestVs;
-                    bestVs = bestVs.equals("The Butcher") ? "thebutcher" : bestVs;
+                    for(int i = 0 ; i < bestVss.length ; i++) {
+                        bestVss[i] = bestVss[i].equals("The Lost Vikings") ? "lostvikings" : bestVss[i];
+                        bestVss[i] = bestVss[i].equals("Sgt. Hammer") ? "sgthammer" : bestVss[i];
+                        bestVss[i] = bestVss[i].equals("Ly. Morales") ? "ltmorales" : bestVss[i];
+                        bestVss[i] = bestVss[i].equals("E.T.C.") ? "etc" : bestVss[i];
+                        bestVss[i] = bestVss[i].equals("The Butcher") ? "thebutcher" : bestVss[i];
+                    }
 
-                    int idHero = getResources().getIdentifier(bestVs.toLowerCase(), "drawable", getPackageName());
+                    int idHero = getResources().getIdentifier(bestVss[0].toLowerCase(), "drawable", getPackageName());
                     im2.setImageResource(idHero);
 
-                    Log.d(TAG, bestVs + " is the best against " + heroName + " (" + bestWinrate + "%)");
+                    int idHero2 = getResources().getIdentifier(bestVss[1].toLowerCase(), "drawable", getPackageName());
+                    im3.setImageResource(idHero2);
+
+                    int idHero3 = getResources().getIdentifier(bestVss[2].toLowerCase(), "drawable", getPackageName());
+                    im4.setImageResource(idHero3);
+
+                    Log.d(TAG, bestVss[0] + "," + bestVss[1] + "," + bestVss[2] + " best Vs " + heroName);
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Toast.makeText(getApplicationContext(),
