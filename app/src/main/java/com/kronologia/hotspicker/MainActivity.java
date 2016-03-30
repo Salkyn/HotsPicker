@@ -34,7 +34,9 @@ public class MainActivity extends Activity {
     private String jsonResponse;
     private String baseUrl = "http://www.kronologia.fr/HotsPicker/";
 
-    ImageView im1, im2, im3, im4;
+    ImageView imAllies1, imAllies2, imAllies3, imAllies4, imAllies5;
+    ImageView imEnemies1, imEnemies2, imEnemies3, imEnemies4, imEnemies5;
+    ImageView imChoice1, imChoice2, imChoice3;
     LinearLayout imLayout;
 
     String[] heroNames = {"falstad","gall","greymane","illidan","jaina","kaelthas",
@@ -43,7 +45,7 @@ public class MainActivity extends Activity {
             "murky","nazeebo","sgthammer","sylvanas","xul","zagara","brightwing",
             "kharazim","lili","ltmorales","malfurion","rehgar","tassadar","tyrande",
             "uther","anubarak","artanis","arthas","chen","cho","diablo","etc","johanna",
-            "leoric","muradin","rexxar","sonya","stitches","tyrael"};
+            "leoric","muradin","rexxar","sonya","stitches","tyrael","dehaka"};
 
 
     @Override
@@ -56,10 +58,11 @@ public class MainActivity extends Activity {
 
         imLayout = (LinearLayout) findViewById(R.id.images_layout);
 
-        im1 = (ImageView) findViewById(R.id.imageView1);
-        im2 = (ImageView) findViewById(R.id.imageView2);
-        im3 = (ImageView) findViewById(R.id.imageView3);
-        im4 = (ImageView) findViewById(R.id.imageView4);
+        imAllies1 = (ImageView) findViewById(R.id.imageViewAllies1);
+
+        imChoice1 = (ImageView) findViewById(R.id.imageViewChoice1);
+        imChoice2 = (ImageView) findViewById(R.id.imageViewChoice2);
+        imChoice3 = (ImageView) findViewById(R.id.imageViewChoice3);
 
         for(String hero : heroNames) {
             ImageView i = new ImageView(this);
@@ -80,7 +83,7 @@ public class MainActivity extends Activity {
             String n1 = v.getTag().toString();
 
             int idHero = getResources().getIdentifier(n1, "drawable", getPackageName());
-            im1.setImageResource(idHero);
+            imAllies1.setImageResource(idHero);
 
             makeJsonArrayRequest(n1);
         }
@@ -97,7 +100,7 @@ public class MainActivity extends Activity {
 
                 try {
 
-                    String[] bestVss= new String[3];
+                    String[] bestVss = {"","",""};
                     double bestWinrate = 100;
 
                     for (int i = 0; i < response.length(); i++) {
@@ -120,19 +123,22 @@ public class MainActivity extends Activity {
                     for(int i = 0 ; i < bestVss.length ; i++) {
                         bestVss[i] = bestVss[i].equals("The Lost Vikings") ? "lostvikings" : bestVss[i];
                         bestVss[i] = bestVss[i].equals("Sgt. Hammer") ? "sgthammer" : bestVss[i];
-                        bestVss[i] = bestVss[i].equals("Ly. Morales") ? "ltmorales" : bestVss[i];
+                        bestVss[i] = bestVss[i].equals("Lt. Morales") ? "ltmorales" : bestVss[i];
                         bestVss[i] = bestVss[i].equals("E.T.C.") ? "etc" : bestVss[i];
                         bestVss[i] = bestVss[i].equals("The Butcher") ? "thebutcher" : bestVss[i];
                     }
 
                     int idHero = getResources().getIdentifier(bestVss[0].toLowerCase(), "drawable", getPackageName());
-                    im2.setImageResource(idHero);
+                    imChoice1.setTag(bestVss[0]);
+                    imChoice1.setImageResource(idHero);
 
                     int idHero2 = getResources().getIdentifier(bestVss[1].toLowerCase(), "drawable", getPackageName());
-                    im3.setImageResource(idHero2);
+                    imChoice2.setTag(bestVss[1]);
+                    imChoice2.setImageResource(idHero2);
 
                     int idHero3 = getResources().getIdentifier(bestVss[2].toLowerCase(), "drawable", getPackageName());
-                    im4.setImageResource(idHero3);
+                    imChoice3.setTag(bestVss[2]);
+                    imChoice3.setImageResource(idHero3);
 
                     Log.d(TAG, bestVss[0] + "," + bestVss[1] + "," + bestVss[2] + " best Vs " + heroName);
                 } catch (JSONException e) {

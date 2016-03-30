@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">HotsPicker</string>
+    <string name="defaultName">...</string>
 </resources>
