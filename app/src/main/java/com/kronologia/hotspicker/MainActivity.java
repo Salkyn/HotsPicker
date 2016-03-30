@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -37,6 +38,9 @@ public class MainActivity extends Activity {
     ImageView imAllies1, imAllies2, imAllies3, imAllies4, imAllies5;
     ImageView imEnemies1, imEnemies2, imEnemies3, imEnemies4, imEnemies5;
     ImageView imChoice1, imChoice2, imChoice3;
+
+    TextView tv;
+
     LinearLayout imLayout;
 
     String[] heroNames = {"falstad","gall","greymane","illidan","jaina","kaelthas",
@@ -64,6 +68,8 @@ public class MainActivity extends Activity {
         imChoice2 = (ImageView) findViewById(R.id.imageViewChoice2);
         imChoice3 = (ImageView) findViewById(R.id.imageViewChoice3);
 
+        tv = (TextView) findViewById(R.id.textViewAllies1);
+
         for(String hero : heroNames) {
             ImageView i = new ImageView(this);
             int id = getResources().getIdentifier(hero, "drawable", getPackageName());
@@ -84,6 +90,7 @@ public class MainActivity extends Activity {
 
             int idHero = getResources().getIdentifier(n1, "drawable", getPackageName());
             imAllies1.setImageResource(idHero);
+            tv.setText(n1);
 
             makeJsonArrayRequest(n1);
         }
@@ -126,6 +133,7 @@ public class MainActivity extends Activity {
                         bestVss[i] = bestVss[i].equals("Lt. Morales") ? "ltmorales" : bestVss[i];
                         bestVss[i] = bestVss[i].equals("E.T.C.") ? "etc" : bestVss[i];
                         bestVss[i] = bestVss[i].equals("The Butcher") ? "thebutcher" : bestVss[i];
+                        bestVss[i] = bestVss[i].equals("Li-Ming") ? "liming" : bestVss[i];
                     }
 
                     int idHero = getResources().getIdentifier(bestVss[0].toLowerCase(), "drawable", getPackageName());
