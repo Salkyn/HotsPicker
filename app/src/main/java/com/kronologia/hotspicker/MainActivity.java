@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -104,6 +105,7 @@ public class MainActivity extends Activity {
             imAllies1.setImageResource(idHero);
             tv.setText(n1);
 
+            switchTeams();
             makeJsonArrayRequest(n1);
         }
     };
@@ -194,5 +196,25 @@ public class MainActivity extends Activity {
         int idHero3 = getResources().getIdentifier(name3.toLowerCase(), "drawable", getPackageName());
         imChoice3.setTag(name3);
         imChoice3.setImageResource(idHero3);
+    }
+
+    public void switchTeams() {
+        LinearLayout team1 = (LinearLayout) findViewById(R.id.firstTeamLayout);
+        LinearLayout team2 = (LinearLayout) findViewById(R.id.secondTeamLayout);
+
+        RelativeLayout.LayoutParams alignRightLP = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        alignRightLP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
+        RelativeLayout.LayoutParams alignLeftLP = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        alignLeftLP.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+
+        team1.setLayoutParams(alignRightLP);
+        team2.setLayoutParams(alignLeftLP);
+
+        //TODO remettre les autres layout au milieu
     }
 }

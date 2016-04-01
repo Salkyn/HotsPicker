@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_alignParentLeft="true"
         android:orientation="vertical"
-        android:id="@+id/alliesLayout"
+        android:id="@+id/firstTeamLayout"
         android:gravity="center_vertical">
 
         <ImageView
@@ -88,7 +88,7 @@
         android:layout_width="wrap_content"
         android:layout_alignParentRight="true"
         android:orientation="vertical"
-        android:id="@+id/enemiesLayout"
+        android:id="@+id/secondTeamLayout"
         android:gravity="center_vertical">
 
         <ImageView
@@ -164,8 +164,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@id/alliesLayout"
-        android:layout_toLeftOf="@id/enemiesLayout"
+        android:layout_toRightOf="@id/firstTeamLayout"
+        android:layout_toLeftOf="@id/secondTeamLayout"
         android:paddingLeft="5dp"
         android:paddingRight="5dp">
 
@@ -181,8 +181,8 @@
         android:layout_height="fill_parent"
         android:orientation="horizontal"
         android:layout_above="@id/allHeroesScrollview"
-        android:layout_toRightOf="@id/alliesLayout"
-        android:layout_toLeftOf="@id/enemiesLayout"
+        android:layout_toRightOf="@id/firstTeamLayout"
+        android:layout_toLeftOf="@id/secondTeamLayout"
         android:gravity="center">
 
         <ImageView
