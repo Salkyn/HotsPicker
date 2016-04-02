@@ -48,6 +48,10 @@ public class MainActivity extends Activity {
             "anubarak","artanis","arthas","chen","cho","diablo","etc","johanna",
             "leoric","muradin","rexxar","sonya","stitches","tyrael","liming","xul","dehaka"};
 
+    int draftPickOrder = 0;
+
+    ImageView[] imPickOrder;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +80,8 @@ public class MainActivity extends Activity {
         imChoice2 = (ImageView) findViewById(R.id.imageViewChoice2);
         imChoice3 = (ImageView) findViewById(R.id.imageViewChoice3);
 
+        imPickOrder = setTeamOrder(1); //La team "Allies" est la première à pick
+
         //Test maj textview, TODO à finir
         tv = (TextView) findViewById(R.id.textViewAllies1);
 
@@ -99,14 +105,18 @@ public class MainActivity extends Activity {
         @Override
         public void onClick(View v) {
 
-            String n1 = v.getTag().toString();
+           if(draftPickOrder < 10) {
 
-            int idHero = getResources().getIdentifier(n1, "drawable", getPackageName());
-            imAllies1.setImageResource(idHero);
-            tv.setText(n1);
+                String n1 = v.getTag().toString();
 
-            switchTeams();
-            makeJsonArrayRequest(n1);
+                int idHero = getResources().getIdentifier(n1, "drawable", getPackageName());
+                imPickOrder[draftPickOrder].setImageResource(idHero);
+                tv.setText(n1); //TODO change position en fc de l'image changée
+
+                makeJsonArrayRequest(n1);
+
+                draftPickOrder++;
+            }
         }
     };
 
@@ -216,5 +226,18 @@ public class MainActivity extends Activity {
         team2.setLayoutParams(alignLeftLP);
 
         //TODO remettre les autres layout au milieu
+    }
+
+    public ImageView[] setTeamOrder(int alliesTeamOrder) {
+
+        ImageView result[];
+
+        if(alliesTeamOrder==1) {
+            result = new ImageView[] {imAllies1,imEnemies1,imEnemies2,imAllies2,imAllies3,imEnemies3,imEnemies4,imAllies4,imAllies5,imEnemies5};
+        } else {
+            result = new ImageView[] {imEnemies1,imAllies1,imAllies2,imEnemies2,imEnemies3,imAllies3,imAllies4,imEnemies4,imEnemies5,imAllies5};
+        }
+
+        return result;
     }
 }
