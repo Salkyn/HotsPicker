@@ -82,7 +82,7 @@ public class MainActivity extends Activity {
         imChoice2 = (ImageView) findViewById(R.id.imageViewChoice2);
         imChoice3 = (ImageView) findViewById(R.id.imageViewChoice3);
 
-        imPickOrder = setTeamOrder(1); //La team "Allies" est la première à pick
+        imPickOrder = setTeamOrder(0); //La team "Enemies" est la première à pick
 
         //Test maj textview, TODO à finir
         tv = (TextView) findViewById(R.id.textViewAllies1);
@@ -118,6 +118,11 @@ public class MainActivity extends Activity {
                 makeJsonArrayRequest(n1);
 
                 draftPickOrder++;
+
+                View currView = findViewById(android.R.id.content);
+                View im = currView.findViewWithTag(n1);
+                im.setVisibility(View.GONE);
+
             }
         }
     };
