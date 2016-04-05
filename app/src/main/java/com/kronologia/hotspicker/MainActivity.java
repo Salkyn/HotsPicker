@@ -24,6 +24,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends Activity {
 
@@ -105,7 +107,7 @@ public class MainActivity extends Activity {
         @Override
         public void onClick(View v) {
 
-           if(draftPickOrder < 10) {
+            if(draftPickOrder < 10) {
 
                 String n1 = v.getTag().toString();
 
@@ -156,12 +158,7 @@ public class MainActivity extends Activity {
 
                     //Changement des noms avec caractères spéciaux pour que le nom corresponde aux ressources de l'app
                     for(int i = 0 ; i < bestVss.length ; i++) {
-                        bestVss[i] = bestVss[i].equals("The Lost Vikings") ? "lostvikings" : bestVss[i];
-                        bestVss[i] = bestVss[i].equals("Sgt. Hammer") ? "sgthammer" : bestVss[i];
-                        bestVss[i] = bestVss[i].equals("Lt. Morales") ? "ltmorales" : bestVss[i];
-                        bestVss[i] = bestVss[i].equals("E.T.C.") ? "etc" : bestVss[i];
-                        bestVss[i] = bestVss[i].equals("The Butcher") ? "thebutcher" : bestVss[i];
-                        bestVss[i] = bestVss[i].equals("Li-Ming") ? "liming" : bestVss[i];
+                        bestVss[i] = formatHeroName(bestVss[i]);
                     }
 
                     updateIuTop3(bestVss[0], bestVss[1], bestVss[2]);
@@ -208,26 +205,6 @@ public class MainActivity extends Activity {
         imChoice3.setImageResource(idHero3);
     }
 
-    public void switchTeams() {
-        LinearLayout team1 = (LinearLayout) findViewById(R.id.firstTeamLayout);
-        LinearLayout team2 = (LinearLayout) findViewById(R.id.secondTeamLayout);
-
-        RelativeLayout.LayoutParams alignRightLP = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
-        alignRightLP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-
-        RelativeLayout.LayoutParams alignLeftLP = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
-        alignLeftLP.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-
-        team1.setLayoutParams(alignRightLP);
-        team2.setLayoutParams(alignLeftLP);
-
-        //TODO remettre les autres layout au milieu
-    }
-
     public ImageView[] setTeamOrder(int alliesTeamOrder) {
 
         ImageView result[];
@@ -239,5 +216,76 @@ public class MainActivity extends Activity {
         }
 
         return result;
+    }
+
+    public String formatHeroName(String name) {
+        switch(name) {
+            case("The Lost Vikings"):
+                return "lostvikings";
+            case("Sgt. Hammer"):
+                return "sgthammer";
+            case("Lt. Morales"):
+                return "ltmorales";
+            case("E.T.C."):
+                return "etc";
+            case("The Butcher"):
+                return "thebutcher";
+            case("Li-Ming"):
+                return "liming";
+            default:
+                return name;
+        }
+    }
+
+    public void getBestAgainstTeam(String[] enemyTeam) {
+        final Map<String, Double> herosWinrateMap = new HashMap<String, Double>();
+
+        Log.d(TAG, "JsonArrayRequest with " + enemyTeam);
+
+        Response.Listener<JSONArray> respListener = new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+
+                try {
+
+                    if(herosWinrateMap.isEmpty()) {
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject person = (JSONObject) response.get(i);
+                            herosWinrateMap.put(person.getString("hero2"), Double.valueOf(person.getString("winrate")));
+                        }
+                    } else {
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject person = (JSONObject) response.get(i);
+                            herosWinrateMap.put(person.getString("hero2"), herosWinrateMap.get(person.getString("hero2"))+Double.valueOf(person.getString("winrate")));
+                        }
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(),
+                            "Error: " + e.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                }
+
+            }
+        };
+
+        Response.ErrorListener errListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        for(int i = 0 ; i < enemyTeam.length ; i++) {
+            JsonArrayRequest req = new JsonArrayRequest(baseUrl + enemyTeam[i] + ".json", respListener, errListener);
+
+            AppController.getInstance().addToRequestQueue(req);
+        }
+
+
+
     }
 }
