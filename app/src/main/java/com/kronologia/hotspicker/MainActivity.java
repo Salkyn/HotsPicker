@@ -119,6 +119,7 @@ public class MainActivity extends Activity {
 
                 draftPickOrder++;
 
+                //On cache l'image du héros sélectionner pour pas pouvoir le sélectionner plusieurs fois
                 View currView = findViewById(android.R.id.content);
                 View im = currView.findViewWithTag(n1);
                 im.setVisibility(View.GONE);
@@ -127,6 +128,15 @@ public class MainActivity extends Activity {
         }
     };
 
+
+    Response.ErrorListener errListener = new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            VolleyLog.d(TAG, "Error: " + error.getMessage());
+            Toast.makeText(getApplicationContext(),
+                    error.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    };
     //Récupère les 3 meilleurs picks contre heroName et maj l'interface
     //TODO factoriser
     private void makeJsonArrayRequest(final String heroName) {
@@ -177,15 +187,6 @@ public class MainActivity extends Activity {
                             Toast.LENGTH_LONG).show();
                 }
 
-            }
-        };
-
-        Response.ErrorListener errListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(TAG, "Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         };
 
@@ -272,15 +273,6 @@ public class MainActivity extends Activity {
                             Toast.LENGTH_LONG).show();
                 }
 
-            }
-        };
-
-        Response.ErrorListener errListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(TAG, "Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         };
 
