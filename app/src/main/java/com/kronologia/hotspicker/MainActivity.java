@@ -283,6 +283,20 @@ public class MainActivity extends Activity {
         }
 
 
+        //retourne la meilleur valeur de la map contre enemyTeam
+        Map.Entry<String, Double> maxEntry = null;
+
+        for (Map.Entry<String, Double> entry : herosWinrateMap.entrySet())
+        {
+            if (maxEntry == null || entry.getValue().compareTo(maxEntry.getValue()) > 0)
+            {
+                maxEntry = entry;
+            }
+        }
+
+
+
+
 
     }
 }
