@@ -29,6 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/textViewAllies1"
+            android:textColor="@color/textDefaultColor"
             android:text="@string/defaultName"/>
 
         <ImageView
@@ -42,6 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/textViewAllies2"
+            android:textColor="@color/textDefaultColor"
             android:text="@string/defaultName"/>
 
         <ImageView
@@ -55,6 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/textViewAllies3"
+            android:textColor="@color/textDefaultColor"
             android:text="@string/defaultName"/>
 
         <ImageView
@@ -68,6 +71,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/textViewAllies4"
+            android:textColor="@color/textDefaultColor"
             android:text="@string/defaultName"/>
 
         <ImageView
@@ -81,6 +85,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/textViewAllies5"
+            android:textColor="@color/textDefaultColor"
             android:text="@string/defaultName"/>
 
     </LinearLayout>
@@ -103,6 +108,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/textViewEnemies1"
+            android:textColor="@color/textDefaultColor"
             android:text="@string/defaultName"/>
 
         <ImageView
@@ -116,6 +122,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/textViewEnemies2"
+            android:textColor="@color/textDefaultColor"
             android:text="@string/defaultName"/>
 
         <ImageView
@@ -129,6 +136,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/textViewEnemies3"
+            android:textColor="@color/textDefaultColor"
             android:text="@string/defaultName"/>
 
         <ImageView
@@ -142,6 +150,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/textViewEnemies4"
+            android:textColor="@color/textDefaultColor"
             android:text="@string/defaultName"/>
 
         <ImageView
@@ -155,6 +164,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/textViewEnemies5"
+            android:textColor="@color/textDefaultColor"
             android:text="@string/defaultName"/>
 
     </LinearLayout>

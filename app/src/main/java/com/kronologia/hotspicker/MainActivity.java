@@ -29,16 +29,15 @@ import java.util.Map;
 
 public class MainActivity extends Activity {
 
-    private static String TAG = MainActivity.class.getSimpleName();
+    public JSONRequests jsonRequests;
 
-    private String jsonResponse;
-    private String baseUrl = "http://www.kronologia.fr/HotsPicker/";
+    private static String TAG = MainActivity.class.getSimpleName();
 
     ImageView imAllies1, imAllies2, imAllies3, imAllies4, imAllies5;
     ImageView imEnemies1, imEnemies2, imEnemies3, imEnemies4, imEnemies5;
+    TextView tvAllies1, tvAllies2, tvAllies3, tvAllies4, tvAllies5;
+    TextView tvEnemies1, tvEnemies2, tvEnemies3, tvEnemies4, tvEnemies5;
     ImageView imChoice1, imChoice2, imChoice3;
-
-    TextView tv;
 
     LinearLayout imLayout;
 
@@ -53,11 +52,14 @@ public class MainActivity extends Activity {
     int draftPickOrder = 0;
 
     ImageView[] imPickOrder;
+    TextView[] tvPickOrder;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        jsonRequests = new JSONRequests(getResources(), getPackageName(), this);
 
         Arrays.sort(heroNames); //classement alphabétique des noms pour l'affichage
 
@@ -78,14 +80,24 @@ public class MainActivity extends Activity {
         imEnemies4 = (ImageView) findViewById(R.id.imageViewEnemies4);
         imEnemies5 = (ImageView) findViewById(R.id.imageViewEnemies5);
 
+        tvAllies1 = (TextView) findViewById(R.id.textViewAllies1);
+        tvAllies2 = (TextView) findViewById(R.id.textViewAllies2);
+        tvAllies3 = (TextView) findViewById(R.id.textViewAllies3);
+        tvAllies4 = (TextView) findViewById(R.id.textViewAllies4);
+        tvAllies5 = (TextView) findViewById(R.id.textViewAllies5);
+
+        tvEnemies1 = (TextView) findViewById(R.id.textViewEnemies1);
+        tvEnemies2 = (TextView) findViewById(R.id.textViewEnemies2);
+        tvEnemies3 = (TextView) findViewById(R.id.textViewEnemies3);
+        tvEnemies4 = (TextView) findViewById(R.id.textViewEnemies4);
+        tvEnemies5 = (TextView) findViewById(R.id.textViewEnemies5);
+
         imChoice1 = (ImageView) findViewById(R.id.imageViewChoice1);
         imChoice2 = (ImageView) findViewById(R.id.imageViewChoice2);
         imChoice3 = (ImageView) findViewById(R.id.imageViewChoice3);
 
         imPickOrder = setTeamOrder(0); //La team "Enemies" est la première à pick
-
-        //Test maj textview, TODO à finir
-        tv = (TextView) findViewById(R.id.textViewAllies1);
+        tvPickOrder = setTvTeamOrder(0);
 
         //Ajout de toutes les images pour les picks
         //Le nom dans heroNames doit correspondre au nom de la ressource
@@ -113,9 +125,9 @@ public class MainActivity extends Activity {
 
                 int idHero = getResources().getIdentifier(n1, "drawable", getPackageName());
                 imPickOrder[draftPickOrder].setImageResource(idHero);
-                tv.setText(n1); //TODO change position en fc de l'image changée
+                tvPickOrder[draftPickOrder].setText(n1); //TODO change position en fc de l'image changée
 
-                makeJsonArrayRequest(n1);
+                jsonRequests.makeJsonArrayRequest(n1);
 
                 draftPickOrder++;
 
@@ -124,92 +136,12 @@ public class MainActivity extends Activity {
                 View im = currView.findViewWithTag(n1);
                 im.setVisibility(View.GONE);
 
+            } else {
+                String[] myTeam = {tvAllies1.getText().toString(), tvAllies2.getText().toString(), tvAllies3.getText().toString(), tvAllies4.getText().toString(), tvAllies5.getText().toString()};
+                jsonRequests.getBestAgainstTeam(myTeam);
             }
         }
     };
-
-
-    Response.ErrorListener errListener = new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError error) {
-            VolleyLog.d(TAG, "Error: " + error.getMessage());
-            Toast.makeText(getApplicationContext(),
-                    error.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    };
-    //Récupère les 3 meilleurs picks contre heroName et maj l'interface
-    //TODO factoriser
-    private void makeJsonArrayRequest(final String heroName) {
-
-        Log.d(TAG, "JsonArrayRequest with " + heroName);
-
-        Response.Listener<JSONArray> respListener = new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-
-                try {
-
-                    String[] bestVss = {"","",""};
-                    double bestWinrate = 100;
-
-                    //On parcours les résultats héros par héros pour avoir le meilleur winrate vs heroName
-                    //TODO pt-ê faut-il parcourir la boucle 3 fois pour que ce soit juste ?
-                    for (int i = 0; i < response.length(); i++) {
-                        jsonResponse = "";
-
-                        JSONObject person = (JSONObject) response.get(i);
-
-                        double winrate = Double.valueOf(person.getString("winrate"));
-
-
-                        if(winrate < bestWinrate) {
-                            bestWinrate = winrate;
-                            bestVss[2] = bestVss[1];
-                            bestVss[1] = bestVss[0];
-                            bestVss[0] =  person.getString("hero2");
-                        }
-
-                    }
-
-                    //Changement des noms avec caractères spéciaux pour que le nom corresponde aux ressources de l'app
-                    for(int i = 0 ; i < bestVss.length ; i++) {
-                        bestVss[i] = formatHeroName(bestVss[i]);
-                    }
-
-                    updateIuTop3(bestVss[0], bestVss[1], bestVss[2]);
-
-                    Log.d(TAG, bestVss[0] + ", " + bestVss[1] + ", " + bestVss[2] + " best Vs " + heroName);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(),
-                            "Error: " + e.getMessage(),
-                            Toast.LENGTH_LONG).show();
-                }
-
-            }
-        };
-
-        JsonArrayRequest req = new JsonArrayRequest(baseUrl + heroName + ".json", respListener, errListener);
-
-        AppController.getInstance().addToRequestQueue(req);
-    }
-
-    //Maj de l'interface selon les meilleurs héros obtenus
-    public void updateIuTop3(String name1, String name2, String name3) {
-
-        int idHero = getResources().getIdentifier(name1.toLowerCase(), "drawable", getPackageName());
-        imChoice1.setTag(name1);
-        imChoice1.setImageResource(idHero);
-
-        int idHero2 = getResources().getIdentifier(name2.toLowerCase(), "drawable", getPackageName());
-        imChoice2.setTag(name2);
-        imChoice2.setImageResource(idHero2);
-
-        int idHero3 = getResources().getIdentifier(name3.toLowerCase(), "drawable", getPackageName());
-        imChoice3.setTag(name3);
-        imChoice3.setImageResource(idHero3);
-    }
 
     public ImageView[] setTeamOrder(int alliesTeamOrder) {
 
@@ -224,79 +156,17 @@ public class MainActivity extends Activity {
         return result;
     }
 
-    public String formatHeroName(String name) {
-        switch(name) {
-            case("The Lost Vikings"):
-                return "lostvikings";
-            case("Sgt. Hammer"):
-                return "sgthammer";
-            case("Lt. Morales"):
-                return "ltmorales";
-            case("E.T.C."):
-                return "etc";
-            case("The Butcher"):
-                return "thebutcher";
-            case("Li-Ming"):
-                return "liming";
-            default:
-                return name;
+    public TextView[] setTvTeamOrder(int alliesTeamOrder) {
+
+        TextView result[];
+
+        if(alliesTeamOrder==1) {
+            result = new TextView[] {tvAllies1,tvEnemies1,tvEnemies2,tvAllies2,tvAllies3,tvEnemies3,tvEnemies4,tvAllies4,tvAllies5,tvEnemies5};
+        } else {
+            result = new TextView[] {tvEnemies1,tvAllies1,tvAllies2,tvEnemies2,tvEnemies3,tvAllies3,tvAllies4,tvEnemies4,tvEnemies5,tvAllies5};
         }
+
+        return result;
     }
 
-    public void getBestAgainstTeam(String[] enemyTeam) {
-        final Map<String, Double> herosWinrateMap = new HashMap<String, Double>();
-
-        Log.d(TAG, "JsonArrayRequest with " + enemyTeam);
-
-        Response.Listener<JSONArray> respListener = new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-
-                try {
-
-                    if(herosWinrateMap.isEmpty()) {
-                        for (int i = 0; i < response.length(); i++) {
-                            JSONObject person = (JSONObject) response.get(i);
-                            herosWinrateMap.put(person.getString("hero2"), Double.valueOf(person.getString("winrate")));
-                        }
-                    } else {
-                        for (int i = 0; i < response.length(); i++) {
-                            JSONObject person = (JSONObject) response.get(i);
-                            herosWinrateMap.put(person.getString("hero2"), herosWinrateMap.get(person.getString("hero2"))+Double.valueOf(person.getString("winrate")));
-                        }
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(),
-                            "Error: " + e.getMessage(),
-                            Toast.LENGTH_LONG).show();
-                }
-
-            }
-        };
-
-        for(int i = 0 ; i < enemyTeam.length ; i++) {
-            JsonArrayRequest req = new JsonArrayRequest(baseUrl + enemyTeam[i] + ".json", respListener, errListener);
-
-            AppController.getInstance().addToRequestQueue(req);
-        }
-
-
-        //retourne la meilleur valeur de la map contre enemyTeam
-        Map.Entry<String, Double> maxEntry = null;
-
-        for (Map.Entry<String, Double> entry : herosWinrateMap.entrySet())
-        {
-            if (maxEntry == null || entry.getValue().compareTo(maxEntry.getValue()) > 0)
-            {
-                maxEntry = entry;
-            }
-        }
-
-
-
-
-
-    }
 }
