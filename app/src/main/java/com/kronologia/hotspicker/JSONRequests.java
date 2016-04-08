@@ -3,7 +3,6 @@ package com.kronologia.hotspicker;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -98,6 +97,10 @@ public class JSONRequests {
         Response.Listener<JSONArray> respListener = new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
+
+                String[] bestVss = {"","",""};
+                double bestWinrate = 500;
+
                 try {
 
                     for (int i = 0; i < response.length(); i++) {
@@ -112,21 +115,21 @@ public class JSONRequests {
                         }
                     }
 
-                    //retourne la meilleur valeur de la map contre enemyTeam
-                    Map.Entry<String, Double> maxEntry = null;
-
-                    for (Map.Entry<String, Double> entry : herosWinrateMap.entrySet()) {
-                        //Log.d(TAG, entry.getKey() + " : " + entry.getValue());
-                        if (maxEntry == null || entry.getValue().compareTo(maxEntry.getValue()) > 0) {
-                            maxEntry = entry;
+                    for(int i = 0 ; i < 3 ; i++) {
+                        for (Map.Entry<String, Double> entry : herosWinrateMap.entrySet()) {
+                            if (entry.getValue() < bestWinrate) {
+                                bestWinrate = entry.getValue();
+                                bestVss[2] = bestVss[1];
+                                bestVss[1] = bestVss[0];
+                                bestVss[0] = entry.getKey();
+                            } 
                         }
                     }
 
-                    maxEntry.setValue(maxEntry.getValue()/enemyTeam.length); //avg winrate
 
-
-                    iu.updateIuTop3(maxEntry.getKey(), "default", "default");
-                    Log.i(TAG, maxEntry.getKey() + " with winrate (%) : " + maxEntry.getValue());
+                    iu.updateIuTop3(bestVss[0], bestVss[1], bestVss[2]);
+                    Log.i(TAG, "Top : (" + bestVss[0] + ", " + bestVss[1] + ", " + bestVss[2] + ")");
+                    Log.i(TAG, "Winrates : " + herosWinrateMap.get(bestVss[0]) + " ; " + herosWinrateMap.get(bestVss[1]) + " ; " + herosWinrateMap.get(bestVss[2]));
 
 
 
