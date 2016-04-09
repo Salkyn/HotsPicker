@@ -96,8 +96,10 @@ public class MainActivity extends Activity {
         imChoice2 = (ImageView) findViewById(R.id.imageViewChoice2);
         imChoice3 = (ImageView) findViewById(R.id.imageViewChoice3);
 
-        imPickOrder = setTeamOrder(0); //La team "Enemies" est la première à pick
-        tvPickOrder = setTvTeamOrder(0);
+        imPickOrder = setTeamOrder(1); //La team "Enemies" est la première à pick
+        tvPickOrder = setTvTeamOrder(1);
+
+        imAllies1.setOnClickListener(returnClickListener);
 
         //Ajout de toutes les images pour les picks
         //Le nom dans heroNames doit correspondre au nom de la ressource
@@ -125,7 +127,7 @@ public class MainActivity extends Activity {
 
                 int idHero = getResources().getIdentifier(n1, "drawable", getPackageName());
                 imPickOrder[draftPickOrder].setImageResource(idHero);
-                tvPickOrder[draftPickOrder].setText(n1); //TODO change position en fc de l'image changée
+                tvPickOrder[draftPickOrder].setText(n1);
 
                 jsonRequests.makeJsonArrayRequest(n1);
 
@@ -142,6 +144,30 @@ public class MainActivity extends Activity {
             }
         }
     };
+
+    View.OnClickListener returnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v){
+            if(draftPickOrder == 0) {
+                Log.w(TAG, "Can't cancel last pick");
+                return;
+            }
+            draftPickOrder--;
+
+            String n1 = tvPickOrder[draftPickOrder].getText().toString();
+
+            int idDefault = getResources().getIdentifier("default1", "drawable", getPackageName());
+            imPickOrder[draftPickOrder].setImageResource(idDefault);
+            tvPickOrder[draftPickOrder].setText("...");
+
+
+            //On reaffiche l'image du héros sélectionner pour pouvoir le sélectionner à nouveau
+            View currView = findViewById(android.R.id.content);
+            View im = currView.findViewWithTag(n1);
+            im.setVisibility(View.VISIBLE);
+        }
+
+        };
 
     public ImageView[] setTeamOrder(int alliesTeamOrder) {
 

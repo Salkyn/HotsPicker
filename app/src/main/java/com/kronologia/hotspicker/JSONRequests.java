@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by Maxence on 06/04/2016.
@@ -115,21 +116,15 @@ public class JSONRequests {
                         }
                     }
 
-                    for(int i = 0 ; i < 3 ; i++) {
-                        for (Map.Entry<String, Double> entry : herosWinrateMap.entrySet()) {
-                            if (entry.getValue() < bestWinrate) {
-                                bestWinrate = entry.getValue();
-                                bestVss[2] = bestVss[1];
-                                bestVss[1] = bestVss[0];
-                                bestVss[0] = entry.getKey();
-                            } 
-                        }
-                    }
+                    Map orderedHerosWinrateMap = sortByValue(herosWinrateMap);
 
+                    String top1 = orderedHerosWinrateMap.keySet().toArray()[0].toString();
+                    String top2 = orderedHerosWinrateMap.keySet().toArray()[1].toString();
+                    String top3 = orderedHerosWinrateMap.keySet().toArray()[2].toString();
 
-                    iu.updateIuTop3(bestVss[0], bestVss[1], bestVss[2]);
-                    Log.i(TAG, "Top : (" + bestVss[0] + ", " + bestVss[1] + ", " + bestVss[2] + ")");
-                    Log.i(TAG, "Winrates : " + herosWinrateMap.get(bestVss[0]) + " ; " + herosWinrateMap.get(bestVss[1]) + " ; " + herosWinrateMap.get(bestVss[2]));
+                    iu.updateIuTop3(top1, top2, top3);
+                    Log.i(TAG, "Top : (" + top1 + ", " + top2 + ", " + top3 + ")");
+                    Log.i(TAG, "Winrates : " + orderedHerosWinrateMap.get(top1) + " ; " + orderedHerosWinrateMap.get(top2) + " ; " + orderedHerosWinrateMap.get(top3));
 
 
 
@@ -151,7 +146,6 @@ public class JSONRequests {
 
     }
 
-
     Response.ErrorListener errListener = new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
@@ -159,4 +153,10 @@ public class JSONRequests {
             Log.d(TAG, error.getMessage());
         }
     };
+
+    public static Map sortByValue(Map unsortedMap) {
+        Map sortedMap = new TreeMap(new ValueComparator(unsortedMap));
+        sortedMap.putAll(unsortedMap);
+        return sortedMap;
+    }
 }
