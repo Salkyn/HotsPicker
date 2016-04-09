@@ -7,6 +7,7 @@ import com.kronologia.hotspicker.AppController;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -99,8 +100,6 @@ public class MainActivity extends Activity {
         imPickOrder = setTeamOrder(1); //La team "Enemies" est la première à pick
         tvPickOrder = setTvTeamOrder(1);
 
-        imAllies1.setOnClickListener(returnClickListener);
-
         //Ajout de toutes les images pour les picks
         //Le nom dans heroNames doit correspondre au nom de la ressource
         for(String hero : heroNames) {
@@ -140,17 +139,18 @@ public class MainActivity extends Activity {
 
             } else {
                 String[] myTeam = {tvAllies1.getText().toString(), tvAllies2.getText().toString(), tvAllies3.getText().toString(), tvAllies4.getText().toString(), tvAllies5.getText().toString()};
-                jsonRequests.getBestAgainstTeam(myTeam);
+                String[] ennemyTeam = {tvEnemies1.getText().toString(), tvEnemies2.getText().toString(), tvEnemies3.getText().toString(), tvEnemies4.getText().toString(), tvEnemies5.getText().toString()};
+                jsonRequests.getBestAgainstTeam(ennemyTeam);
             }
         }
     };
 
-    View.OnClickListener returnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v){
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             if(draftPickOrder == 0) {
                 Log.w(TAG, "Can't cancel last pick");
-                return;
+                return true;
             }
             draftPickOrder--;
 
@@ -160,14 +160,14 @@ public class MainActivity extends Activity {
             imPickOrder[draftPickOrder].setImageResource(idDefault);
             tvPickOrder[draftPickOrder].setText("...");
 
-
             //On reaffiche l'image du héros sélectionner pour pouvoir le sélectionner à nouveau
             View currView = findViewById(android.R.id.content);
             View im = currView.findViewWithTag(n1);
             im.setVisibility(View.VISIBLE);
+            return true;
         }
-
-        };
+        return super.onKeyDown(keyCode, event);
+    }
 
     public ImageView[] setTeamOrder(int alliesTeamOrder) {
 
@@ -194,5 +194,4 @@ public class MainActivity extends Activity {
 
         return result;
     }
-
 }

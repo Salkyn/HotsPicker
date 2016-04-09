@@ -91,16 +91,12 @@ public class JSONRequests {
 
     public void getBestAgainstTeam(final String[] enemyTeam) {
         final Map<String, Double> herosWinrateMap = new HashMap<String, Double>();
-        final String name = enemyTeam[0];
 
         Log.d(TAG, "JsonArrayRequest on " + enemyTeam.length);
 
         Response.Listener<JSONArray> respListener = new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-
-                String[] bestVss = {"","",""};
-                double bestWinrate = 500;
 
                 try {
 
@@ -118,15 +114,11 @@ public class JSONRequests {
 
                     Map orderedHerosWinrateMap = sortByValue(herosWinrateMap);
 
-                    String top1 = orderedHerosWinrateMap.keySet().toArray()[0].toString();
-                    String top2 = orderedHerosWinrateMap.keySet().toArray()[1].toString();
-                    String top3 = orderedHerosWinrateMap.keySet().toArray()[2].toString();
+                    String top1 = HeroesGestion.formatHeroName(orderedHerosWinrateMap.keySet().toArray()[0].toString());
+                    String top2 = HeroesGestion.formatHeroName(orderedHerosWinrateMap.keySet().toArray()[1].toString());
+                    String top3 = HeroesGestion.formatHeroName(orderedHerosWinrateMap.keySet().toArray()[2].toString());
 
                     iu.updateIuTop3(top1, top2, top3);
-                    Log.i(TAG, "Top : (" + top1 + ", " + top2 + ", " + top3 + ")");
-                    Log.i(TAG, "Winrates : " + orderedHerosWinrateMap.get(top1) + " ; " + orderedHerosWinrateMap.get(top2) + " ; " + orderedHerosWinrateMap.get(top3));
-
-
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -154,9 +146,11 @@ public class JSONRequests {
         }
     };
 
-    public static Map sortByValue(Map unsortedMap) {
+    public Map sortByValue(Map unsortedMap) {
         Map sortedMap = new TreeMap(new ValueComparator(unsortedMap));
         sortedMap.putAll(unsortedMap);
+        Log.i(TAG, sortedMap.keySet().toString());
+        Log.i(TAG, sortedMap.values().toString());
         return sortedMap;
     }
 }

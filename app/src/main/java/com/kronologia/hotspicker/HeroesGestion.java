@@ -21,6 +21,8 @@ public class HeroesGestion {
                 return "liming";
             case("Kael'Thas"):
                 return "kaelthas";
+            case("Kael\thas"):
+                return "kaelthas";
             default:
                 return name;
         }

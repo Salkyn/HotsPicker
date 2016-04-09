@@ -101,7 +101,7 @@
             android:id="@+id/imageViewEnemies1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/default1"
+            android:src="@drawable/default2"
             android:padding="2dp"/>
 
         <TextView
@@ -115,7 +115,7 @@
             android:id="@+id/imageViewEnemies2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/default1"
+            android:src="@drawable/default2"
             android:padding="2dp"/>
 
         <TextView
@@ -129,7 +129,7 @@
             android:id="@+id/imageViewEnemies3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/default1"
+            android:src="@drawable/default2"
             android:padding="2dp"/>
 
         <TextView
@@ -143,7 +143,7 @@
             android:id="@+id/imageViewEnemies4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/default1"
+            android:src="@drawable/default2"
             android:padding="2dp"/>
 
         <TextView
@@ -157,7 +157,7 @@
             android:id="@+id/imageViewEnemies5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/default1"
+            android:src="@drawable/default2"
             android:padding="2dp"/>
 
         <TextView
@@ -200,21 +200,21 @@
             android:id="@+id/imageViewChoice1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/default1"
+            android:src="@drawable/defaultvoid"
             android:padding="2dp"/>
 
         <ImageView
             android:id="@+id/imageViewChoice2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/default1"
+            android:src="@drawable/defaultvoid"
             android:padding="2dp"/>
 
         <ImageView
             android:id="@+id/imageViewChoice3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/default1"
+            android:src="@drawable/defaultvoid"
             android:padding="2dp"/>
 
     </LinearLayout>
