@@ -151,6 +151,9 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        int idDefault;
+
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if(draftPickOrder == 0) {
                 Log.w(TAG, "Can't cancel last pick");
@@ -158,11 +161,17 @@ public class MainActivity extends Activity {
             }
             draftPickOrder--;
 
+            String tagParent = ((LinearLayout)imPickOrder[draftPickOrder].getParent()).getTag().toString();
             String n1 = tvPickOrder[draftPickOrder].getText().toString();
 
-            int idDefault = getResources().getIdentifier("default1", "drawable", getPackageName());
+            //Permet de savoir dans quel équipe on enlève un membre
+            if(tagParent.equals("allies")) {
+                idDefault = getResources().getIdentifier("default1", "drawable", getPackageName());
+            } else {
+                idDefault = getResources().getIdentifier("default2", "drawable", getPackageName());
+            }
             imPickOrder[draftPickOrder].setImageResource(idDefault);
-            tvPickOrder[draftPickOrder].setText("...");
+            tvPickOrder[draftPickOrder].setText(getResources().getString(R.string.defaultName));
 
             //On reaffiche l'image du héros sélectionner pour pouvoir le sélectionner à nouveau
             View currView = findViewById(android.R.id.content);
@@ -171,7 +180,7 @@ public class MainActivity extends Activity {
 
             String[] ennemyTeam = {tvEnemies1.getText().toString(), tvEnemies2.getText().toString(), tvEnemies3.getText().toString(), tvEnemies4.getText().toString(), tvEnemies5.getText().toString()};
 
-            if(!ennemyTeam[0].equals("...")) {
+            if(!ennemyTeam[0].equals(getResources().getString(R.string.defaultName))) {
                 jsonRequests.getBestAgainstTeam(ennemyTeam);
             }
 

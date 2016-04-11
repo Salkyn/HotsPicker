@@ -16,7 +16,8 @@
         android:layout_alignParentLeft="true"
         android:orientation="vertical"
         android:id="@+id/firstTeamLayout"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:tag="allies">
 
         <ImageView
             android:id="@+id/imageViewAllies1"
@@ -95,7 +96,8 @@
         android:layout_alignParentRight="true"
         android:orientation="vertical"
         android:id="@+id/secondTeamLayout"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:tag="enemies">
 
         <ImageView
             android:id="@+id/imageViewEnemies1"

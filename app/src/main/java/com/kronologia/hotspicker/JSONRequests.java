@@ -25,10 +25,12 @@ public class JSONRequests {
     private IU iu;
     private String TAG;
     private String baseUrl;
+    private Resources resources;
 
     public JSONRequests(Resources r, String pack, Activity a) {
-        this.iu = new IU(r, pack, a);
 
+        this.resources = r;
+        this.iu = new IU(r, pack, a);
         this.TAG = JSONRequests.class.getSimpleName();
         baseUrl = "http://www.kronologia.fr/HotsPicker/";
     };
@@ -130,7 +132,7 @@ public class JSONRequests {
         };
 
         for(int i = 0 ; i < enemyTeam.length ; i++) {
-            if(enemyTeam[i].length() > 0 && !enemyTeam[i].equals("...")) {
+            if(enemyTeam[i].length() > 0 && !enemyTeam[i].equals(this.resources.getString(R.string.defaultName))) {
                 Log.d(TAG, "request nb " + i);
                 JsonArrayRequest req = new JsonArrayRequest(baseUrl + enemyTeam[i] + ".json", respListener, errListener);
 
