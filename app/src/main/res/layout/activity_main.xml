@@ -97,10 +97,10 @@
         android:orientation="vertical"
         android:id="@+id/secondTeamLayout"
         android:gravity="center_vertical"
-        android:tag="enemies">
+        android:tag="ennemies">
 
         <ImageView
-            android:id="@+id/imageViewEnemies1"
+            android:id="@+id/imageViewEnnemies1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/default2"
@@ -109,12 +109,12 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textViewEnemies1"
+            android:id="@+id/textViewEnnemies1"
             android:textColor="@color/textDefaultColor"
             android:text="@string/defaultName"/>
 
         <ImageView
-            android:id="@+id/imageViewEnemies2"
+            android:id="@+id/imageViewEnnemies2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/default2"
@@ -123,12 +123,12 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textViewEnemies2"
+            android:id="@+id/textViewEnnemies2"
             android:textColor="@color/textDefaultColor"
             android:text="@string/defaultName"/>
 
         <ImageView
-            android:id="@+id/imageViewEnemies3"
+            android:id="@+id/imageViewEnnemies3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/default2"
@@ -137,12 +137,12 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textViewEnemies3"
+            android:id="@+id/textViewEnnemies3"
             android:textColor="@color/textDefaultColor"
             android:text="@string/defaultName"/>
 
         <ImageView
-            android:id="@+id/imageViewEnemies4"
+            android:id="@+id/imageViewEnnemies4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/default2"
@@ -151,12 +151,12 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textViewEnemies4"
+            android:id="@+id/textViewEnnemies4"
             android:textColor="@color/textDefaultColor"
             android:text="@string/defaultName"/>
 
         <ImageView
-            android:id="@+id/imageViewEnemies5"
+            android:id="@+id/imageViewEnnemies5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/default2"
@@ -165,7 +165,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textViewEnemies5"
+            android:id="@+id/textViewEnnemies5"
             android:textColor="@color/textDefaultColor"
             android:text="@string/defaultName"/>
 

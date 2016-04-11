@@ -91,11 +91,11 @@ public class JSONRequests {
         AppController.getInstance().addToRequestQueue(req);
     }
 
-    public void getBestAgainstTeam(final String[] enemyTeam) {
-        Log.i(TAG, "getBestAgainstTeam " + enemyTeam[0]);
+    public void getBestAgainstTeam(final String[] ennemyTeam, final String[] alliesTeam) {
+        Log.i(TAG, "getBestAgainstTeam " + ennemyTeam[0]);
         final Map<String, Double> herosWinrateMap = new HashMap<String, Double>();
 
-        Log.d(TAG, "JsonArrayRequest on " + enemyTeam.length);
+        Log.d(TAG, "JsonArrayRequest on " + ennemyTeam.length);
 
         Response.Listener<JSONArray> respListener = new Response.Listener<JSONArray>() {
             @Override
@@ -115,6 +115,20 @@ public class JSONRequests {
                         }
                     }
 
+                    for(String allie : alliesTeam) {
+                        if(!allie.equals(resources.getString(R.string.defaultName))) {
+                            herosWinrateMap.remove(allie);
+                            Log.i(TAG, "Removed " + allie + " from heropool");
+                        }
+                    }
+
+                    for(String ennemy : ennemyTeam) {
+                        if(!ennemy.equals(resources.getString(R.string.defaultName))) {
+                            herosWinrateMap.remove(ennemy);
+                            Log.i(TAG, "Removed " + ennemy + " from heropool");
+                        }
+                    }
+
                     Map orderedHerosWinrateMap = sortByValue(herosWinrateMap);
 
                     String top1 = HeroesGestion.formatHeroName(orderedHerosWinrateMap.keySet().toArray()[0].toString());
@@ -131,10 +145,10 @@ public class JSONRequests {
             }
         };
 
-        for(int i = 0 ; i < enemyTeam.length ; i++) {
-            if(enemyTeam[i].length() > 0 && !enemyTeam[i].equals(this.resources.getString(R.string.defaultName))) {
+        for(int i = 0 ; i < ennemyTeam.length ; i++) {
+            if(ennemyTeam[i].length() > 0 && !ennemyTeam[i].equals(this.resources.getString(R.string.defaultName))) {
                 Log.d(TAG, "request nb " + i);
-                JsonArrayRequest req = new JsonArrayRequest(baseUrl + enemyTeam[i] + ".json", respListener, errListener);
+                JsonArrayRequest req = new JsonArrayRequest(baseUrl + ennemyTeam[i] + ".json", respListener, errListener);
 
                 AppController.getInstance().addToRequestQueue(req);
             }

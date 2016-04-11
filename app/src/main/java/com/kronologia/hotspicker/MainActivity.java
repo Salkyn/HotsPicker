@@ -37,9 +37,9 @@ public class MainActivity extends Activity {
     private static String TAG = MainActivity.class.getSimpleName();
 
     ImageView imAllies1, imAllies2, imAllies3, imAllies4, imAllies5;
-    ImageView imEnemies1, imEnemies2, imEnemies3, imEnemies4, imEnemies5;
+    ImageView imEnnemies1, imEnnemies2, imEnnemies3, imEnnemies4, imEnnemies5;
     TextView tvAllies1, tvAllies2, tvAllies3, tvAllies4, tvAllies5;
-    TextView tvEnemies1, tvEnemies2, tvEnemies3, tvEnemies4, tvEnemies5;
+    TextView tvennemies1, tvennemies2, tvennemies3, tvennemies4, tvennemies5;
     ImageView imChoice1, imChoice2, imChoice3;
 
     LinearLayout imLayout;
@@ -77,11 +77,11 @@ public class MainActivity extends Activity {
         imAllies4 = (ImageView) findViewById(R.id.imageViewAllies4);
         imAllies5 = (ImageView) findViewById(R.id.imageViewAllies5);
 
-        imEnemies1 = (ImageView) findViewById(R.id.imageViewEnemies1);
-        imEnemies2 = (ImageView) findViewById(R.id.imageViewEnemies2);
-        imEnemies3 = (ImageView) findViewById(R.id.imageViewEnemies3);
-        imEnemies4 = (ImageView) findViewById(R.id.imageViewEnemies4);
-        imEnemies5 = (ImageView) findViewById(R.id.imageViewEnemies5);
+        imEnnemies1 = (ImageView) findViewById(R.id.imageViewEnnemies1);
+        imEnnemies2 = (ImageView) findViewById(R.id.imageViewEnnemies2);
+        imEnnemies3 = (ImageView) findViewById(R.id.imageViewEnnemies3);
+        imEnnemies4 = (ImageView) findViewById(R.id.imageViewEnnemies4);
+        imEnnemies5 = (ImageView) findViewById(R.id.imageViewEnnemies5);
 
         tvAllies1 = (TextView) findViewById(R.id.textViewAllies1);
         tvAllies2 = (TextView) findViewById(R.id.textViewAllies2);
@@ -89,11 +89,11 @@ public class MainActivity extends Activity {
         tvAllies4 = (TextView) findViewById(R.id.textViewAllies4);
         tvAllies5 = (TextView) findViewById(R.id.textViewAllies5);
 
-        tvEnemies1 = (TextView) findViewById(R.id.textViewEnemies1);
-        tvEnemies2 = (TextView) findViewById(R.id.textViewEnemies2);
-        tvEnemies3 = (TextView) findViewById(R.id.textViewEnemies3);
-        tvEnemies4 = (TextView) findViewById(R.id.textViewEnemies4);
-        tvEnemies5 = (TextView) findViewById(R.id.textViewEnemies5);
+        tvennemies1 = (TextView) findViewById(R.id.textViewEnnemies1);
+        tvennemies2 = (TextView) findViewById(R.id.textViewEnnemies2);
+        tvennemies3 = (TextView) findViewById(R.id.textViewEnnemies3);
+        tvennemies4 = (TextView) findViewById(R.id.textViewEnnemies4);
+        tvennemies5 = (TextView) findViewById(R.id.textViewEnnemies5);
 
         imChoice1 = (ImageView) findViewById(R.id.imageViewChoice1);
         imChoice2 = (ImageView) findViewById(R.id.imageViewChoice2);
@@ -130,12 +130,13 @@ public class MainActivity extends Activity {
                 imPickOrder[draftPickOrder].setImageResource(idHero);
                 tvPickOrder[draftPickOrder].setText(n1);
 
-                String[] ennemyTeam = {tvEnemies1.getText().toString(), tvEnemies2.getText().toString(), tvEnemies3.getText().toString(), tvEnemies4.getText().toString(), tvEnemies5.getText().toString()};
+                String[] alliesTeam = {tvAllies1.getText().toString(), tvAllies2.getText().toString(), tvAllies3.getText().toString(), tvAllies4.getText().toString(), tvAllies5.getText().toString()};
+                String[] ennemyTeam = {tvennemies1.getText().toString(), tvennemies2.getText().toString(), tvennemies3.getText().toString(), tvennemies4.getText().toString(), tvennemies5.getText().toString()};
 
                 Log.i(TAG, ennemyTeam[0]+" "+ennemyTeam[1]+" "+ennemyTeam[2]+" "+ennemyTeam[3]+" "+ennemyTeam[4]);
 
                 if(!ennemyTeam[0].equals("...")) {
-                    jsonRequests.getBestAgainstTeam(ennemyTeam);
+                    jsonRequests.getBestAgainstTeam(ennemyTeam, alliesTeam);
                 }
 
                 draftPickOrder++;
@@ -178,10 +179,11 @@ public class MainActivity extends Activity {
             View im = currView.findViewWithTag(n1);
             im.setVisibility(View.VISIBLE);
 
-            String[] ennemyTeam = {tvEnemies1.getText().toString(), tvEnemies2.getText().toString(), tvEnemies3.getText().toString(), tvEnemies4.getText().toString(), tvEnemies5.getText().toString()};
+            String[] ennemyTeam = {tvennemies1.getText().toString(), tvennemies2.getText().toString(), tvennemies3.getText().toString(), tvennemies4.getText().toString(), tvennemies5.getText().toString()};
+            String[] alliesTeam = {tvAllies1.getText().toString(), tvAllies2.getText().toString(), tvAllies3.getText().toString(), tvAllies4.getText().toString(), tvAllies5.getText().toString()};
 
             if(!ennemyTeam[0].equals(getResources().getString(R.string.defaultName))) {
-                jsonRequests.getBestAgainstTeam(ennemyTeam);
+                jsonRequests.getBestAgainstTeam(ennemyTeam, alliesTeam);
             }
 
             return true;
@@ -194,9 +196,9 @@ public class MainActivity extends Activity {
         ImageView result[];
 
         if(alliesTeamOrder==1) {
-            result = new ImageView[] {imAllies1,imEnemies1,imEnemies2,imAllies2,imAllies3,imEnemies3,imEnemies4,imAllies4,imAllies5,imEnemies5};
+            result = new ImageView[] {imAllies1,imEnnemies1,imEnnemies2,imAllies2,imAllies3,imEnnemies3,imEnnemies4,imAllies4,imAllies5,imEnnemies5};
         } else {
-            result = new ImageView[] {imEnemies1,imAllies1,imAllies2,imEnemies2,imEnemies3,imAllies3,imAllies4,imEnemies4,imEnemies5,imAllies5};
+            result = new ImageView[] {imEnnemies1,imAllies1,imAllies2,imEnnemies2,imEnnemies3,imAllies3,imAllies4,imEnnemies4,imEnnemies5,imAllies5};
         }
 
         return result;
@@ -207,9 +209,9 @@ public class MainActivity extends Activity {
         TextView result[];
 
         if(alliesTeamOrder==1) {
-            result = new TextView[] {tvAllies1,tvEnemies1,tvEnemies2,tvAllies2,tvAllies3,tvEnemies3,tvEnemies4,tvAllies4,tvAllies5,tvEnemies5};
+            result = new TextView[] {tvAllies1,tvennemies1,tvennemies2,tvAllies2,tvAllies3,tvennemies3,tvennemies4,tvAllies4,tvAllies5,tvennemies5};
         } else {
-            result = new TextView[] {tvEnemies1,tvAllies1,tvAllies2,tvEnemies2,tvEnemies3,tvAllies3,tvAllies4,tvEnemies4,tvEnemies5,tvAllies5};
+            result = new TextView[] {tvennemies1,tvAllies1,tvAllies2,tvennemies2,tvennemies3,tvAllies3,tvAllies4,tvennemies4,tvennemies5,tvAllies5};
         }
 
         return result;
