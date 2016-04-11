@@ -24,8 +24,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends Activity {
@@ -97,7 +99,7 @@ public class MainActivity extends Activity {
         imChoice2 = (ImageView) findViewById(R.id.imageViewChoice2);
         imChoice3 = (ImageView) findViewById(R.id.imageViewChoice3);
 
-        imPickOrder = setTeamOrder(1); //La team "Enemies" est la première à pick
+        imPickOrder = setTeamOrder(1); //La team "Allies" est la première à pick
         tvPickOrder = setTvTeamOrder(1);
 
         //Ajout de toutes les images pour les picks
@@ -128,7 +130,13 @@ public class MainActivity extends Activity {
                 imPickOrder[draftPickOrder].setImageResource(idHero);
                 tvPickOrder[draftPickOrder].setText(n1);
 
-                jsonRequests.makeJsonArrayRequest(n1);
+                String[] ennemyTeam = {tvEnemies1.getText().toString(), tvEnemies2.getText().toString(), tvEnemies3.getText().toString(), tvEnemies4.getText().toString(), tvEnemies5.getText().toString()};
+
+                Log.i(TAG, ennemyTeam[0]+" "+ennemyTeam[1]+" "+ennemyTeam[2]+" "+ennemyTeam[3]+" "+ennemyTeam[4]);
+
+                if(!ennemyTeam[0].equals("...")) {
+                    jsonRequests.getBestAgainstTeam(ennemyTeam);
+                }
 
                 draftPickOrder++;
 
@@ -137,10 +145,6 @@ public class MainActivity extends Activity {
                 View im = currView.findViewWithTag(n1);
                 im.setVisibility(View.GONE);
 
-            } else {
-                String[] myTeam = {tvAllies1.getText().toString(), tvAllies2.getText().toString(), tvAllies3.getText().toString(), tvAllies4.getText().toString(), tvAllies5.getText().toString()};
-                String[] ennemyTeam = {tvEnemies1.getText().toString(), tvEnemies2.getText().toString(), tvEnemies3.getText().toString(), tvEnemies4.getText().toString(), tvEnemies5.getText().toString()};
-                jsonRequests.getBestAgainstTeam(ennemyTeam);
             }
         }
     };
@@ -164,6 +168,13 @@ public class MainActivity extends Activity {
             View currView = findViewById(android.R.id.content);
             View im = currView.findViewWithTag(n1);
             im.setVisibility(View.VISIBLE);
+
+            String[] ennemyTeam = {tvEnemies1.getText().toString(), tvEnemies2.getText().toString(), tvEnemies3.getText().toString(), tvEnemies4.getText().toString(), tvEnemies5.getText().toString()};
+
+            if(!ennemyTeam[0].equals("...")) {
+                jsonRequests.getBestAgainstTeam(ennemyTeam);
+            }
+
             return true;
         }
         return super.onKeyDown(keyCode, event);

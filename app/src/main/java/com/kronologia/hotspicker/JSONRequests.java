@@ -90,6 +90,7 @@ public class JSONRequests {
     }
 
     public void getBestAgainstTeam(final String[] enemyTeam) {
+        Log.i(TAG, "getBestAgainstTeam " + enemyTeam[0]);
         final Map<String, Double> herosWinrateMap = new HashMap<String, Double>();
 
         Log.d(TAG, "JsonArrayRequest on " + enemyTeam.length);
@@ -129,10 +130,12 @@ public class JSONRequests {
         };
 
         for(int i = 0 ; i < enemyTeam.length ; i++) {
-            Log.d(TAG, "request nb " + i);
-            JsonArrayRequest req = new JsonArrayRequest(baseUrl + enemyTeam[i] + ".json", respListener, errListener);
+            if(enemyTeam[i].length() > 0 && !enemyTeam[i].equals("...")) {
+                Log.d(TAG, "request nb " + i);
+                JsonArrayRequest req = new JsonArrayRequest(baseUrl + enemyTeam[i] + ".json", respListener, errListener);
 
-            AppController.getInstance().addToRequestQueue(req);
+                AppController.getInstance().addToRequestQueue(req);
+            }
         }
 
 
