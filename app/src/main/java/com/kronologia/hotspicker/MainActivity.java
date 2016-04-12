@@ -1,9 +1,5 @@
 package com.kronologia.hotspicker;
 
-import com.android.volley.Request;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.kronologia.hotspicker.AppController;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,24 +7,9 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends Activity {
 
@@ -40,7 +21,6 @@ public class MainActivity extends Activity {
     ImageView imEnnemies1, imEnnemies2, imEnnemies3, imEnnemies4, imEnnemies5;
     TextView tvAllies1, tvAllies2, tvAllies3, tvAllies4, tvAllies5;
     TextView tvennemies1, tvennemies2, tvennemies3, tvennemies4, tvennemies5;
-    ImageView imChoice1, imChoice2, imChoice3;
 
     LinearLayout imLayout;
 
@@ -95,10 +75,6 @@ public class MainActivity extends Activity {
         tvennemies4 = (TextView) findViewById(R.id.textViewEnnemies4);
         tvennemies5 = (TextView) findViewById(R.id.textViewEnnemies5);
 
-        imChoice1 = (ImageView) findViewById(R.id.imageViewChoice1);
-        imChoice2 = (ImageView) findViewById(R.id.imageViewChoice2);
-        imChoice3 = (ImageView) findViewById(R.id.imageViewChoice3);
-
         imPickOrder = setTeamOrder(1); //La team "Allies" est la première à pick
         tvPickOrder = setTvTeamOrder(1);
 
@@ -108,11 +84,17 @@ public class MainActivity extends Activity {
             ImageView i = new ImageView(this);
             int id = getResources().getIdentifier(hero, "drawable", getPackageName());
             i.setImageResource(id);
+
             i.setOnClickListener(imgClickListener);
             i.setPadding(2,0,2,0); //TODO pas propre
             i.setTag(hero); //pour identifier l'image plus facilement
 
             imLayout.addView(i);
+
+            /*android.view.ViewGroup.LayoutParams layoutParams = i.getLayoutParams();
+            layoutParams.width = 20;
+            layoutParams.height = 20;
+            i.setLayoutParams(layoutParams);*/
         }
     }
 
