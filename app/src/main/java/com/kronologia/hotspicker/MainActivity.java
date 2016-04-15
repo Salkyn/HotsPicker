@@ -1,8 +1,13 @@
 package com.kronologia.hotspicker;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -83,7 +88,9 @@ public class MainActivity extends Activity {
         for(String hero : heroNames) {
             ImageView i = new ImageView(this);
             int id = getResources().getIdentifier(hero, "drawable", getPackageName());
-            i.setImageResource(id);
+            Drawable d = getResources().getDrawable(id);
+            i.setImageDrawable(resize(d));
+           // i.setImageResource(id);
 
             i.setOnClickListener(imgClickListener);
             i.setPadding(2,0,2,0); //TODO pas propre
@@ -197,5 +204,17 @@ public class MainActivity extends Activity {
         }
 
         return result;
+    }
+
+    private Drawable resize(Drawable image) {
+
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+
+        Bitmap b = ((BitmapDrawable)image).getBitmap();
+        Bitmap bitmapResized = Bitmap.createScaledBitmap(b, width/10, width/10, false);
+        return new BitmapDrawable(getResources(), bitmapResized);
     }
 }
