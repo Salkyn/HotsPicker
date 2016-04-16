@@ -115,65 +115,45 @@ public class MainActivity extends Activity {
 
                 String n1 = v.getTag().toString();
 
-                int idHero = getResources().getIdentifier(n1, "drawable", getPackageName());
-                imPickOrder[draftPickOrder].setImageResource(idHero);
-                tvPickOrder[draftPickOrder].setText(n1);
+                if((n1.equals("cho") || n1.equals("gall")) && draftPickOrder < 8) {
 
-                String[] alliesTeam = {tvAllies1.getText().toString(), tvAllies2.getText().toString(), tvAllies3.getText().toString(), tvAllies4.getText().toString(), tvAllies5.getText().toString()};
-                String[] ennemyTeam = {tvennemies1.getText().toString(), tvennemies2.getText().toString(), tvennemies3.getText().toString(), tvennemies4.getText().toString(), tvennemies5.getText().toString()};
+                    Boolean doublePick = ((LinearLayout)imPickOrder[draftPickOrder].getParent()).getTag().toString().equals(((LinearLayout)imPickOrder[draftPickOrder+1].getParent()).getTag().toString());
 
-                Log.i(TAG, ennemyTeam[0]+" "+ennemyTeam[1]+" "+ennemyTeam[2]+" "+ennemyTeam[3]+" "+ennemyTeam[4]);
+                    if(doublePick) {
+                        Log.i(TAG, "doublePick detected");
 
-                if(!ennemyTeam[0].equals("...")) {
-                    jsonRequests.getBestAgainstTeam(ennemyTeam, alliesTeam);
+                        addPick("cho");
+                        addPick("gall");
+                        updateTeams();
+                    }
+                } else if(!n1.equals("cho") && !n1.equals("gall")) {
+                    addPick(n1);
+                    updateTeams();
                 }
-
-                draftPickOrder++;
-
-                //On cache l'image du héros sélectionner pour pas pouvoir le sélectionner plusieurs fois
-                View currView = findViewById(android.R.id.content);
-                View im = currView.findViewWithTag(n1);
-                im.setVisibility(View.GONE);
 
             }
         }
     };
 
+
+    //Permet d'annuler le dernier pick effectué
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-        int idDefault;
 
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if(draftPickOrder == 0) {
                 Log.w(TAG, "Can't cancel last pick");
                 return true;
             }
-            draftPickOrder--;
 
-            String tagParent = ((LinearLayout)imPickOrder[draftPickOrder].getParent()).getTag().toString();
-            String n1 = tvPickOrder[draftPickOrder].getText().toString();
+            String n1 = tvPickOrder[draftPickOrder-1].getText().toString();
+            Log.i(TAG, "Cancel pick " + n1);
 
-            //Permet de savoir dans quel équipe on enlève un membre
-            if(tagParent.equals("allies")) {
-                idDefault = getResources().getIdentifier("default1", "drawable", getPackageName());
-            } else {
-                idDefault = getResources().getIdentifier("default2", "drawable", getPackageName());
-            }
-            imPickOrder[draftPickOrder].setImageResource(idDefault);
-            tvPickOrder[draftPickOrder].setText(getResources().getString(R.string.defaultName));
+            cancelPick();
+            if(n1.equals("cho") || n1.equals("gall")) { cancelPick(); }
 
-            //On reaffiche l'image du héros sélectionner pour pouvoir le sélectionner à nouveau
-            View currView = findViewById(android.R.id.content);
-            View im = currView.findViewWithTag(n1);
-            im.setVisibility(View.VISIBLE);
-
-            String[] ennemyTeam = {tvennemies1.getText().toString(), tvennemies2.getText().toString(), tvennemies3.getText().toString(), tvennemies4.getText().toString(), tvennemies5.getText().toString()};
-            String[] alliesTeam = {tvAllies1.getText().toString(), tvAllies2.getText().toString(), tvAllies3.getText().toString(), tvAllies4.getText().toString(), tvAllies5.getText().toString()};
-
-            if(!ennemyTeam[0].equals(getResources().getString(R.string.defaultName))) {
-                jsonRequests.getBestAgainstTeam(ennemyTeam, alliesTeam);
-            }
+            updateTeams();
 
             return true;
         }
@@ -216,5 +196,49 @@ public class MainActivity extends Activity {
         Bitmap b = ((BitmapDrawable)image).getBitmap();
         Bitmap bitmapResized = Bitmap.createScaledBitmap(b, width/10, width/10, false);
         return new BitmapDrawable(getResources(), bitmapResized);
+    }
+
+    private void addPick(String heroName) {
+        int idHero = getResources().getIdentifier(heroName, "drawable", getPackageName());
+        imPickOrder[draftPickOrder].setImageResource(idHero);
+        tvPickOrder[draftPickOrder].setText(heroName);
+
+        //On cache l'image du héros sélectionner pour pas pouvoir le sélectionner plusieurs fois
+        View currView = findViewById(android.R.id.content);
+        View im = currView.findViewWithTag(heroName);
+        im.setVisibility(View.GONE);
+
+        draftPickOrder++;
+    }
+
+    private void cancelPick() {
+        int idDefault;
+        draftPickOrder--;
+
+        String tagParent = ((LinearLayout)imPickOrder[draftPickOrder].getParent()).getTag().toString();
+        String n = tvPickOrder[draftPickOrder].getText().toString();
+
+        //Permet de savoir dans quel équipe on enlève un membre
+        if(tagParent.equals("allies")) {
+            idDefault = getResources().getIdentifier("default1", "drawable", getPackageName());
+        } else {
+            idDefault = getResources().getIdentifier("default2", "drawable", getPackageName());
+        }
+        imPickOrder[draftPickOrder].setImageResource(idDefault);
+        tvPickOrder[draftPickOrder].setText(getResources().getString(R.string.defaultName));
+
+        //On reaffiche l'image du héros sélectionner pour pouvoir le sélectionner à nouveau
+        View currView = findViewById(android.R.id.content);
+        View im = currView.findViewWithTag(n);
+        im.setVisibility(View.VISIBLE);
+    }
+
+    private void updateTeams() {
+        String[] ennemyTeam = {tvennemies1.getText().toString(), tvennemies2.getText().toString(), tvennemies3.getText().toString(), tvennemies4.getText().toString(), tvennemies5.getText().toString()};
+        String[] alliesTeam = {tvAllies1.getText().toString(), tvAllies2.getText().toString(), tvAllies3.getText().toString(), tvAllies4.getText().toString(), tvAllies5.getText().toString()};
+
+        if(!ennemyTeam[0].equals(getResources().getString(R.string.defaultName))) {
+            jsonRequests.getBestAgainstTeam(ennemyTeam, alliesTeam);
+        }
     }
 }
