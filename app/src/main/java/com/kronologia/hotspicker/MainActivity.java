@@ -1,6 +1,7 @@
 package com.kronologia.hotspicker;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
@@ -8,8 +9,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,8 +27,11 @@ public class MainActivity extends Activity {
 
     ImageView imAllies1, imAllies2, imAllies3, imAllies4, imAllies5;
     ImageView imEnnemies1, imEnnemies2, imEnnemies3, imEnnemies4, imEnnemies5;
+    ImageView imChoice1, imChoice2, imChoice3;
     TextView tvAllies1, tvAllies2, tvAllies3, tvAllies4, tvAllies5;
     TextView tvennemies1, tvennemies2, tvennemies3, tvennemies4, tvennemies5;
+
+    Button resetButton;
 
     LinearLayout imLayout;
 
@@ -68,6 +74,10 @@ public class MainActivity extends Activity {
         imEnnemies4 = (ImageView) findViewById(R.id.imageViewEnnemies4);
         imEnnemies5 = (ImageView) findViewById(R.id.imageViewEnnemies5);
 
+        imChoice1 = (ImageView) findViewById(R.id.imageViewChoice1);
+        imChoice2 = (ImageView) findViewById(R.id.imageViewChoice2);
+        imChoice3 = (ImageView) findViewById(R.id.imageViewChoice3);
+
         tvAllies1 = (TextView) findViewById(R.id.textViewAllies1);
         tvAllies2 = (TextView) findViewById(R.id.textViewAllies2);
         tvAllies3 = (TextView) findViewById(R.id.textViewAllies3);
@@ -80,6 +90,9 @@ public class MainActivity extends Activity {
         tvennemies4 = (TextView) findViewById(R.id.textViewEnnemies4);
         tvennemies5 = (TextView) findViewById(R.id.textViewEnnemies5);
 
+        resetButton = (Button) findViewById(R.id.newDraftButton);
+        resetButton.setOnClickListener(newDraftListener);
+
         imPickOrder = setTeamOrder(1); //La team "Allies" est la première à pick
         tvPickOrder = setTvTeamOrder(1);
 
@@ -90,7 +103,7 @@ public class MainActivity extends Activity {
             int id = getResources().getIdentifier(hero, "drawable", getPackageName());
             Drawable d = getResources().getDrawable(id);
             i.setImageDrawable(resize(d));
-           // i.setImageResource(id);
+            // i.setImageResource(id);
 
             i.setOnClickListener(imgClickListener);
             i.setPadding(2,0,2,0); //TODO pas propre
@@ -131,6 +144,9 @@ public class MainActivity extends Activity {
                     updateTeams();
                 }
 
+                if(draftPickOrder == 10) {
+                    endDraft();
+                }
             }
         }
     };
@@ -241,4 +257,22 @@ public class MainActivity extends Activity {
             jsonRequests.getBestAgainstTeam(ennemyTeam, alliesTeam);
         }
     }
+
+    private void endDraft() {
+
+        imChoice1.setVisibility(View.GONE);
+        imChoice2.setVisibility(View.GONE);
+        imChoice3.setVisibility(View.GONE);
+
+        resetButton.setVisibility(View.VISIBLE);
+    }
+
+    View.OnClickListener newDraftListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
+        }
+    };
 }

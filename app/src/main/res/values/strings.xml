@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">HotsPicker</string>
     <string name="defaultName">...</string>
+    <string name="resetDraft">New draft</string>
 </resources>

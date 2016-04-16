@@ -250,6 +250,13 @@
             android:src="@drawable/defaultvoid"
             android:padding="2dp"/>
 
+        <Button
+            android:id="@+id/newDraftButton"
+            android:text="@string/resetDraft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"/>
+
     </LinearLayout>
 
 </RelativeLayout>
