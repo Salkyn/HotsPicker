@@ -229,33 +229,44 @@
         android:layout_toLeftOf="@id/secondTeamLayout"
         android:gravity="center">
 
+        <Button
+            android:id="@+id/switchTeamsButton"
+            android:text="@string/switchTeams"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"/>
+
+
         <ImageView
             android:id="@+id/imageViewChoice1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/defaultvoid"
-            android:padding="2dp"/>
+            android:padding="2dp"
+            android:visibility="gone"/>
 
         <ImageView
             android:id="@+id/imageViewChoice2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/defaultvoid"
-            android:padding="2dp"/>
+            android:padding="2dp"
+            android:visibility="gone"/>
 
         <ImageView
             android:id="@+id/imageViewChoice3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/defaultvoid"
-            android:padding="2dp"/>
+            android:padding="2dp"
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/newDraftButton"
             android:text="@string/resetDraft"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="invisible"/>
+            android:visibility="gone"/>
 
     </LinearLayout>
 

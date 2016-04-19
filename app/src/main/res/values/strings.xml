@@ -2,4 +2,5 @@
     <string name="app_name">HotsPicker</string>
     <string name="defaultName">...</string>
     <string name="resetDraft">New draft</string>
+    <string name="switchTeams">Switch teams</string>
 </resources>
