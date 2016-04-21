@@ -148,7 +148,7 @@ public class JSONRequests {
         for(int i = 0 ; i < ennemyTeam.length ; i++) {
             if(ennemyTeam[i].length() > 0 && !ennemyTeam[i].equals(this.resources.getString(R.string.defaultName))) {
                 Log.d(TAG, "request nb " + i);
-                JsonArrayRequest req = new JsonArrayRequest(baseUrl + ennemyTeam[i] + ".json", respListener, errListener);
+                JsonArrayRequest req = new JsonArrayRequest(baseUrl + HeroesGestion.formatHeroName(ennemyTeam[i]) + ".json", respListener, errListener);
 
                 AppController.getInstance().addToRequestQueue(req);
             }
@@ -171,5 +171,9 @@ public class JSONRequests {
         Log.i(TAG, sortedMap.keySet().toString());
         Log.i(TAG, sortedMap.values().toString());
         return sortedMap;
+    }
+
+    public void removeHero(String name) {
+        //TODO
     }
 }

@@ -6,7 +6,7 @@
 
     <!-- Hero names -->
     <string name="abathur">Abathur</string>
-    <string name="anubarak">Anub'Arak</string>
+    <string name="anubarak">Anub\'Arak</string>
     <string name="artanis">Artanis</string>
     <string name="arthas">Arthas</string>
     <string name="azmodan">Azmodan</string>
@@ -23,7 +23,7 @@
     <string name="illidan">Illidan</string>
     <string name="jaina">Jaina</string>
     <string name="johanna">Johanna</string>
-    <string name="kealthas">Kael'Thas</string>
+    <string name="kaelthas">Kael\'Thas</string>
     <string name="kerrigan">Kerrigan</string>
     <string name="kharazim">Kharazim</string>
     <string name="leoric">Leoric</string>

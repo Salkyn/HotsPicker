@@ -123,6 +123,7 @@ public class MainActivity extends Activity {
             // i.setImageResource(id);
 
             i.setOnClickListener(imgClickListener);
+            i.setOnLongClickListener(banClickListener);
             i.setPadding(2,0,2,0); //TODO pas propre
             i.setTag(hero); //pour identifier l'image plus facilement
 
@@ -135,8 +136,17 @@ public class MainActivity extends Activity {
         }
     }
 
+    View.OnLongClickListener banClickListener = new View.OnLongClickListener(){
+        @Override
+        public boolean onLongClick(View v) {
+
+            jsonRequests.removeHero(v.getTag().toString());
+            v.setVisibility(View.GONE);
+            return true;
+        }
+    };
+
     //OnClickListener sur la liste complète pour savoir quel héros est choisi
-    //TODO ajouter le même listener sur les images "conseil" pour simplifier les picks ?
     View.OnClickListener imgClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -181,7 +191,6 @@ public class MainActivity extends Activity {
     //Permet d'annuler le dernier pick effectué
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-
 
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if(draftPickOrder == 0) {
@@ -228,8 +237,10 @@ public class MainActivity extends Activity {
 
     private void addPick(String heroName) {
         int idHero = getResources().getIdentifier(heroName, "drawable", getPackageName());
+        String tv = getResources().getString(getResources().getIdentifier(heroName, "string", getPackageName()));
+
         imPickOrder[draftPickOrder].setImageResource(idHero);
-        tvPickOrder[draftPickOrder].setText(heroName);
+        tvPickOrder[draftPickOrder].setText(tv);
 
         //On cache l'image du héros sélectionner pour pas pouvoir le sélectionner plusieurs fois
         View currView = findViewById(android.R.id.content);
