@@ -43,8 +43,8 @@ public class MainActivity extends Activity {
             "nazeebo","sgthammer","sylvanas","zagara","brightwing","kharazim",
             "lili","ltmorales","malfurion","rehgar","tassadar","tyrande","uther",
             "anubarak","artanis","arthas","chen","cho","diablo","etc","johanna",
-            "leoric","muradin","rexxar","sonya","stitches","tyrael","liming","xul","dehaka"/*,
-            "tracer"*/};
+            "leoric","muradin","rexxar","sonya","stitches","tyrael","liming","xul","dehaka",
+            "tracer"};
 
     int draftPickOrder = 0;
 
