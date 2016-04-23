@@ -23,6 +23,8 @@ public class HeroesGestion {
                 return "kaelthas";
             case("Kael\thas"):
                 return "kaelthas";
+            case("Anub'Arak"):
+                return "Anubarak";
             default:
                 return name;
         }

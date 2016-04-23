@@ -37,14 +37,14 @@ public class MainActivity extends Activity {
 
     LinearLayout imLayout;
 
-    String[] heroNames = {"falstad","gall","greymane","illidan","jaina","kaelthas",
+    /*String[] heroNames = {"falstad","gall","greymane","illidan","jaina","kaelthas",
             "kerrigan","lunara","nova","raynor","thebutcher","thrall","tychus",
             "valla","zeratul","abathur","azmodan","gazlowe","lostvikings","murky",
             "nazeebo","sgthammer","sylvanas","zagara","brightwing","kharazim",
             "lili","ltmorales","malfurion","rehgar","tassadar","tyrande","uther",
             "anubarak","artanis","arthas","chen","cho","diablo","etc","johanna",
             "leoric","muradin","rexxar","sonya","stitches","tyrael","liming","xul","dehaka",
-            "tracer"};
+            "tracer"};*/
 
     int draftPickOrder = 0;
 
@@ -59,7 +59,7 @@ public class MainActivity extends Activity {
         jsonRequests = new JSONRequests(getResources(), getPackageName(), this);
         iu = new IU(getResources(), getPackageName(), this);
 
-        Arrays.sort(heroNames); //classement alphabétique des noms pour l'affichage
+        MyApplication.orderHeroNames(); //classement alphabétique des noms pour l'affichage
 
         setContentView(R.layout.activity_main);
 
@@ -115,32 +115,26 @@ public class MainActivity extends Activity {
 
         //Ajout de toutes les images pour les picks
         //Le nom dans heroNames doit correspondre au nom de la ressource
-        for(String hero : heroNames) {
+        for(String hero : MyApplication.getHeroNames()) {
             ImageView i = new ImageView(this);
             int id = getResources().getIdentifier(hero, "drawable", getPackageName());
             Drawable d = getResources().getDrawable(id);
             i.setImageDrawable(iu.resize(d, size.x));
-            // i.setImageResource(id);
-
             i.setOnClickListener(imgClickListener);
             i.setOnLongClickListener(banClickListener);
             i.setPadding(2,0,2,0); //TODO pas propre
             i.setTag(hero); //pour identifier l'image plus facilement
 
             imLayout.addView(i);
-
-            /*android.view.ViewGroup.LayoutParams layoutParams = i.getLayoutParams();
-            layoutParams.width = 20;
-            layoutParams.height = 20;
-            i.setLayoutParams(layoutParams);*/
         }
     }
 
+    //Enlève un héros de la ListView
     View.OnLongClickListener banClickListener = new View.OnLongClickListener(){
         @Override
         public boolean onLongClick(View v) {
 
-            jsonRequests.removeHero(v.getTag().toString());
+            MyApplication.removeHero(v.getTag().toString());
             v.setVisibility(View.GONE);
             return true;
         }
@@ -151,6 +145,7 @@ public class MainActivity extends Activity {
         @Override
         public void onClick(View v) {
 
+            //Au premier click, on enlève la possibilité de modifier l'ordre du draft et on affiche les picks conseillés à la place
             if(draftPickOrder == 0) {
                 switchTeamsButton.setVisibility(View.GONE);
                 imChoice1.setVisibility(View.VISIBLE);
@@ -180,6 +175,7 @@ public class MainActivity extends Activity {
 
                 iu.lightNextPicks(imPickOrder, draftPickOrder);
 
+                //Une fois le draft terminé, on enlève les picks conseillés et on propose de relance un nouveau draft
                 if(draftPickOrder == 10) {
                     endDraft();
                 }
@@ -242,6 +238,9 @@ public class MainActivity extends Activity {
         imPickOrder[draftPickOrder].setImageResource(idHero);
         tvPickOrder[draftPickOrder].setText(tv);
 
+        //On ajoute le hero dans la liste des héros non dispos
+        MyApplication.removeHero(tv);
+
         //On cache l'image du héros sélectionner pour pas pouvoir le sélectionner plusieurs fois
         View currView = findViewById(android.R.id.content);
         View im = currView.findViewWithTag(heroName);
@@ -256,6 +255,8 @@ public class MainActivity extends Activity {
 
         String tagParent = ((LinearLayout)imPickOrder[draftPickOrder].getParent()).getTag().toString();
         String n = tvPickOrder[draftPickOrder].getText().toString();
+
+        MyApplication.moveBackHero(n);
 
         //Permet de savoir dans quel équipe on enlève un membre
         if(tagParent.equals("allies")) {

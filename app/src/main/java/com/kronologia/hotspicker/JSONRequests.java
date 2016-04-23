@@ -35,62 +35,6 @@ public class JSONRequests {
         baseUrl = "http://www.kronologia.fr/HotsPicker/";
     };
 
-    //Récupère les 3 meilleurs picks contre heroName et maj l'interface
-    //TODO factoriser
-    public void makeJsonArrayRequest(final String heroName) {
-
-        Log.d(TAG, "JsonArrayRequest with " + heroName);
-
-        Response.Listener<JSONArray> respListener = new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-
-                try {
-
-                    String[] bestVss = {"","",""};
-                    double bestWinrate = 100;
-
-                    //On parcours les résultats héros par héros pour avoir le meilleur winrate vs heroName
-                    //TODO pt-ê faut-il parcourir la boucle 3 fois pour que ce soit juste ?
-                    for (int i = 0; i < response.length(); i++) {
-                        String jsonResponse = "";
-
-                        JSONObject person = (JSONObject) response.get(i);
-
-                        double winrate = Double.valueOf(person.getString("winrate"));
-
-
-                        if(winrate < bestWinrate) {
-                            bestWinrate = winrate;
-                            bestVss[2] = bestVss[1];
-                            bestVss[1] = bestVss[0];
-                            bestVss[0] =  person.getString("hero2");
-                        }
-
-                    }
-
-                    //Changement des noms avec caractères spéciaux pour que le nom corresponde aux ressources de l'app
-                    for(int i = 0 ; i < bestVss.length ; i++) {
-                        bestVss[i] = HeroesGestion.formatHeroName(bestVss[i]);
-                    }
-
-                    iu.updateIuTop3(bestVss[0], bestVss[1], bestVss[2]);
-
-                    Log.d(TAG, bestVss[0] + ", " + bestVss[1] + ", " + bestVss[2] + " best Vs " + heroName);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.e(TAG, e.getMessage());
-                }
-
-            }
-        };
-
-        JsonArrayRequest req = new JsonArrayRequest(baseUrl + heroName + ".json", respListener, errListener);
-
-        AppController.getInstance().addToRequestQueue(req);
-    }
-
     public void getBestAgainstTeam(final String[] ennemyTeam, final String[] alliesTeam) {
         Log.i(TAG, "getBestAgainstTeam " + ennemyTeam[0]);
         final Map<String, Double> herosWinrateMap = new HashMap<String, Double>();
@@ -115,7 +59,7 @@ public class JSONRequests {
                         }
                     }
 
-                    for(String allie : alliesTeam) {
+                    /*for(String allie : alliesTeam) {
                         if(!allie.equals(resources.getString(R.string.defaultName))) {
                             herosWinrateMap.remove(allie);
                             Log.i(TAG, "Removed " + allie + " from heropool");
@@ -127,6 +71,10 @@ public class JSONRequests {
                             herosWinrateMap.remove(ennemy);
                             Log.i(TAG, "Removed " + ennemy + " from heropool");
                         }
+                    }*/
+
+                    for(String removed : MyApplication.getRemovedHeroes()) {
+                        herosWinrateMap.remove(removed);
                     }
 
                     Map orderedHerosWinrateMap = sortByValue(herosWinrateMap);
@@ -173,7 +121,4 @@ public class JSONRequests {
         return sortedMap;
     }
 
-    public void removeHero(String name) {
-        //TODO
-    }
 }
