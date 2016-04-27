@@ -239,7 +239,7 @@ public class MainActivity extends Activity {
         tvPickOrder[draftPickOrder].setText(tv);
 
         //On ajoute le hero dans la liste des héros non dispos
-        MyApplication.removeHero(tv);
+        MyApplication.removeHero(heroName);
 
         //On cache l'image du héros sélectionner pour pas pouvoir le sélectionner plusieurs fois
         View currView = findViewById(android.R.id.content);
@@ -250,11 +250,15 @@ public class MainActivity extends Activity {
     }
 
     private void cancelPick() {
+
+        //TODO cancel chogall pick completely
         int idDefault;
         draftPickOrder--;
 
         String tagParent = ((LinearLayout)imPickOrder[draftPickOrder].getParent()).getTag().toString();
-        String n = tvPickOrder[draftPickOrder].getText().toString();
+        String n = tvPickOrder[draftPickOrder].getText().toString().toLowerCase();
+
+        n = HeroesGestion.formatHeroName(n);
 
         MyApplication.moveBackHero(n);
 
@@ -271,6 +275,8 @@ public class MainActivity extends Activity {
         View currView = findViewById(android.R.id.content);
         View im = currView.findViewWithTag(n);
         im.setVisibility(View.VISIBLE);
+
+        iu.lightNextPicks(imPickOrder, draftPickOrder);
     }
 
     private void updateTeams() {

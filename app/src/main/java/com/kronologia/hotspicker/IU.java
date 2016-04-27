@@ -82,27 +82,30 @@ public class IU {
             return;
         }
 
-        int idDrawable_toPickAllies = res.getIdentifier("default1_c", "drawable", packageName);
-        Drawable allies = res.getDrawable(idDrawable_toPickAllies);
-
-        int idDrawable_toPickEnnemies = res.getIdentifier("default2_c", "drawable", packageName);
-        Drawable ennemies = res.getDrawable(idDrawable_toPickEnnemies);
+        for(int i = currentPickNumber ; i < 10 ; i++) {
+            String tagParent = ((LinearLayout)ivs[i].getParent()).getTag().toString();
+            if(tagParent.equals("allies")) {
+                ivs[i].setImageResource(R.drawable.default1);
+            } else {
+                ivs[i].setImageResource(R.drawable.default2);
+            }
+        }
 
         String tagCurrentParent = ((LinearLayout)ivs[currentPickNumber].getParent()).getTag().toString();
 
         if(tagCurrentParent.equals("allies")) {
-            ivs[currentPickNumber].setImageDrawable(allies);
+            ivs[currentPickNumber].setImageResource(R.drawable.default1_c);
         } else {
-            ivs[currentPickNumber].setImageDrawable(ennemies);
+            ivs[currentPickNumber].setImageResource(R.drawable.default2_c);
         }
 
         if(currentPickNumber != 9) {
             String tagNextParent = ((LinearLayout)ivs[currentPickNumber+1].getParent()).getTag().toString();
             if(tagCurrentParent.equals(tagNextParent)) {
                 if(tagCurrentParent.equals("allies")) {
-                    ivs[currentPickNumber+1].setImageDrawable(allies);
+                    ivs[currentPickNumber+1].setImageResource(R.drawable.default1_c);
                 } else {
-                    ivs[currentPickNumber+1].setImageDrawable(ennemies);
+                    ivs[currentPickNumber+1].setImageResource(R.drawable.default2_c);
                 }
             }
         }

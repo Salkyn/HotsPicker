@@ -15,6 +15,8 @@ public class HeroesGestion {
                 return "ltmorales";
             case("E.T.C."):
                 return "etc";
+            case("e.t.c"):
+                return "etc";
             case("The Butcher"):
                 return "thebutcher";
             case("Li-Ming"):
@@ -23,8 +25,8 @@ public class HeroesGestion {
                 return "kaelthas";
             case("Kael\thas"):
                 return "kaelthas";
-            case("Anub'Arak"):
-                return "Anubarak";
+            case("anub'arak"):
+                return "anubarak";
             default:
                 return name;
         }
